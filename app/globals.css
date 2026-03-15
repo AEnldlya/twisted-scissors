@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --navy: #1A1A2E;
+  --gold: #C9A227;
+  --crimson: #E94560;
+  --cream: #F5F5F0;
+  --white: #FFFFFF;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-[#F5F5F0] text-[#1A1A2E] antialiased;
+    font-family: var(--font-inter), system-ui, sans-serif;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-oswald), system-ui, sans-serif;
+  }
+}
+
+@layer components {
+  .font-display {
+    font-family: var(--font-oswald), system-ui, sans-serif;
+  }
+  
+  .font-accent {
+    font-family: var(--font-playfair), serif;
+  }
+  
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-8 py-4 bg-[#1A1A2E] text-[#C9A227] rounded-none font-semibold hover:bg-[#2A2A4E] transition-all duration-300;
+  }
+  
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-8 py-4 bg-[#C9A227] text-[#1A1A2E] rounded-none font-semibold hover:bg-[#D9B237] transition-all duration-300;
+  }
+}
