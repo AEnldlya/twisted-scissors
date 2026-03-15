@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Scissors, Star, Clock, MapPin, ArrowRight } from 'lucide-react';
 import Navigation from '@/components/Navigation';
+import Image from 'next/image';
 
 export default function HomePage() {
   const services = [
@@ -14,9 +15,12 @@ export default function HomePage() {
   ];
 
   const reviews = [
-    { name: 'Mike T.', rating: 5, text: 'Best barbershop in Hanover. Always leave looking sharp.' },
-    { name: 'James R.', rating: 5, text: 'Great atmosphere and skilled barbers. Highly recommend.' },
-    { name: 'Chris L.', rating: 5, text: 'Finally found a barber who understands what I want.' },
+    { name: 'Rusty S.', rating: 5, text: 'Brook listens to me, rather than merely doing the same thing every time. She\'s always good-humored, and respectful of schedules. I doubt I\'ll ever use a different person for my hair.' },
+    { name: 'T. N.', rating: 5, text: 'Brooke is great! She\'s pretty skilled with a pair of scissors and a razor for a men\'s haircut. Highly recommend!' },
+    { name: 'Susan Henderson', rating: 5, text: 'Great haircuts by Brooke. Have been there many times and always happy with how my hair is cut. Very comfy and clean salon. Super friendly atmosphere.' },
+    { name: 'Lynne Weaver', rating: 5, text: 'Thank you Brooke for taking the time to get my color and style just perfect!! I absolutely love it!' },
+    { name: 'Meredith Erickson', rating: 5, text: 'Stylist was friendly, haircut was exactly what I requested, salon was super clean and welcoming, and the prices were reasonable. I would definitely come back!' },
+    { name: 'Reagan Quinn', rating: 5, text: 'Brooke is super friendly, and the salon is very nice and clean! Brooke did a wonderful job cutting and styling my hair, and the price was extremely reasonable.' },
   ];
 
   return (
@@ -38,7 +42,7 @@ export default function HomePage() {
               transition={{ duration: 0.8 }}
             >
               <span className="text-[#C9A227] font-mono text-sm tracking-[0.3em] uppercase mb-4 block">
-                Hanover's Finest Barbershop
+                Hanover&apos;s Finest Barbershop
               </span>
               <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
                 WHERE PRECISION<br />
@@ -68,8 +72,14 @@ export default function HomePage() {
               transition={{ duration: 0.8, delay: 0.2 }}
               className="relative"
             >
-              <div className="aspect-[4/3] bg-gradient-to-br from-[#2A2A4E] to-[#1A1A2E] rounded-lg flex items-center justify-center">
-                <Scissors className="w-32 h-32 text-[#C9A227]/30" />
+              <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
+                <Image
+                  src="/images/frontdoor.png"
+                  alt="Twisted Scissors Barbershop"
+                  fill
+                  className="object-cover"
+                  priority
+                />
               </div>
               <div className="absolute -bottom-6 -left-6 bg-[#C9A227] text-[#1A1A2E] px-6 py-4 rounded-sm">
                 <div className="font-display text-3xl font-bold">5.0</div>
@@ -166,11 +176,13 @@ export default function HomePage() {
               </div>
             </div>
             
-            <div className="bg-gradient-to-br from-[#2A2A4E] to-[#1A1A2E] aspect-square rounded-lg flex items-center justify-center">
-              <div className="text-center">
-                <div className="font-display text-8xl font-bold text-[#C9A227] mb-4">5+</div>
-                <div className="text-white text-xl">Years Serving Hanover</div>
-              </div>
+            <div className="aspect-square relative rounded-lg overflow-hidden">
+              <Image
+                src="/images/insideview.png"
+                alt="Inside Twisted Scissors"
+                fill
+                className="object-cover"
+              />
             </div>
           </div>
         </div>
@@ -188,7 +200,7 @@ export default function HomePage() {
             </h2>
           </div>
           
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {reviews.map((review, index) => (
               <motion.div
                 key={index}
@@ -237,7 +249,14 @@ export default function HomePage() {
           <div className="grid md:grid-cols-4 gap-8">
             <div>
               <div className="flex items-center gap-2 mb-4">
-                <Scissors className="h-6 w-6 text-[#C9A227]" />
+                <div className="relative w-8 h-8">
+                  <Image
+                    src="/images/logo.png"
+                    alt="Twisted Scissors"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
                 <span className="font-display text-xl font-bold">TWISTED SCISSORS</span>
               </div>
               <p className="text-white/60 text-sm">

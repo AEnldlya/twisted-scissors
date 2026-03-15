@@ -2,7 +2,8 @@
 
 import Link from 'next/link';
 import { useState } from 'react';
-import { Menu, X, Scissors, Phone } from 'lucide-react';
+import { Menu, X, Phone } from 'lucide-react';
+import Image from 'next/image';
 
 export default function Navigation() {
   const [isOpen, setIsOpen] = useState(false);
@@ -20,7 +21,14 @@ export default function Navigation() {
         <div className="flex justify-between items-center h-20">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-3">
-            <Scissors className="h-8 w-8 text-[#C9A227]" />
+            <div className="relative w-10 h-10">
+              <Image
+                src="/images/logo.png"
+                alt="Twisted Scissors"
+                fill
+                className="object-contain"
+              />
+            </div>
             <span className="font-display text-2xl font-bold text-white tracking-wide">
               TWISTED <span className="text-[#C9A227]">SCISSORS</span>
             </span>
