@@ -26,6 +26,8 @@ export const metadata: Metadata = {
   keywords: ["barbershop", "Hanover NH", "haircut", "beard trim", "men's grooming", "Twisted Scissors"],
 };
 
+import PageTransition from "@/components/PageTransition";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,7 +35,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${oswald.variable} ${inter.variable} ${playfair.variable}`}>
-      <body className="bg-[#F5F5F0] text-[#1A1A2E] antialiased">{children}</body>
+      <body className="bg-[#F5F5F0] text-[#1A1A2E] antialiased">
+        <PageTransition>{children}</PageTransition>
+      </body>
     </html>
   );
 }
