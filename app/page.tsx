@@ -99,13 +99,13 @@ export default function HomePage() {
       {/* Hero Section - Black Background */}
       <section className="relative min-h-screen pt-32 pb-20 lg:pt-40 lg:pb-32 bg-black overflow-hidden">
         <div className="absolute inset-0">
-          <motion.div className="absolute top-20 right-20 w-[500px] h-[500px] bg-royal/10 rounded-full blur-[150px]"
+          <motion.div className="absolute top-20 right-20 w-[500px] h-[500px] bg-gold/10 rounded-full blur-[150px]"
             animate={{ scale: [1, 1.2, 1], opacity: [0.1, 0.15, 0.1] }}
             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }} />
         </div>
         
         <div className="absolute inset-0 pointer-events-none">
-          <div className="float-element absolute top-32 left-[10%] w-2 h-2 bg-royal rounded-full" />
+          <div className="float-element absolute top-32 left-[10%] w-2 h-2 bg-gold rounded-full" />
           <div className="float-element absolute top-48 right-[15%] w-3 h-3 bg-grey-400 rounded-full" />
           <div className="float-element absolute bottom-40 left-[20%] w-2 h-2 bg-white/20 rounded-full" />
         </div>
@@ -113,15 +113,15 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             <motion.div style={{ opacity, y: ySpring }} className="relative z-10">
-              <span className="hero-label inline-block text-royal text-sm font-mono tracking-[0.3em] uppercase mb-6">
+              <span className="hero-label inline-block text-gold text-sm font-mono tracking-[0.3em] uppercase mb-6">
                 Hanover&apos;s Finest Barbershop
               </span>
               
               <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-[0.9] mb-8">
                 <span className="hero-title-line block overflow-hidden"><span className="inline-block">WHERE</span></span>
-                <span className="hero-title-line block overflow-hidden"><span className="inline-block text-royal">PRECISION</span></span>
+                <span className="hero-title-line block overflow-hidden"><span className="inline-block text-gold">PRECISION</span></span>
                 <span className="hero-title-line block overflow-hidden"><span className="inline-block">MEETS</span></span>
-                <span className="hero-title-line block overflow-hidden"><span className="inline-block text-royal">STYLE</span></span>
+                <span className="hero-title-line block overflow-hidden"><span className="inline-block text-gold">STYLE</span></span>
               </h1>
               
               <p className="hero-subtitle text-xl md:text-2xl text-grey-300 mb-10 max-w-lg leading-relaxed">
@@ -131,7 +131,7 @@ export default function HomePage() {
               
               <div className="hero-cta flex flex-wrap gap-4">
                 <motion.a href="https://bookoapp.com/book/twisted-scissors" target="_blank" rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-3 px-8 py-4 bg-royal text-white rounded-none font-semibold text-lg hover:shadow-[0_0_40px_rgba(65,105,225,0.4)] transition-all duration-300"
+                  className="group inline-flex items-center gap-3 px-8 py-4 bg-gold text-white rounded-none font-semibold text-lg hover:shadow-[0_0_40px_rgba(65,105,225,0.4)] transition-all duration-300"
                   whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
                   Book Appointment
                   <motion.span animate={{ x: [0, 5, 0] }} transition={{ duration: 1.5, repeat: Infinity }}>
@@ -145,8 +145,8 @@ export default function HomePage() {
             </motion.div>
             
             <motion.div style={{ scale }} className="relative lg:pl-12">
-              <div className="absolute -top-4 -left-4 w-full h-full border-2 border-royal/30" />
-              <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-royal/30" />
+              <div className="absolute -top-4 -left-4 w-full h-full border-2 border-gold/30" />
+              <div className="absolute -bottom-4 -right-4 w-full h-full border-2 border-gold/30" />
               
               <div className="photo-frame relative aspect-square overflow-hidden bg-grey-900 flex items-center justify-center p-12">
                 <Image
@@ -159,7 +159,7 @@ export default function HomePage() {
                 />
               </div>
               
-              <motion.div className="absolute -bottom-6 -left-6 bg-royal text-white px-8 py-6"
+              <motion.div className="absolute -bottom-6 -left-6 bg-gold text-white px-8 py-6"
                 initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 1.5, duration: 0.6, ease: 'back.out' }}>
                 <div className="font-display text-4xl font-bold">5.0</div>
                 <div className="text-sm font-medium flex items-center gap-1">
@@ -170,7 +170,7 @@ export default function HomePage() {
               <motion.div className="absolute -top-4 -right-4 bg-white text-black px-4 py-2 shadow-lg"
                 initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 1.8, duration: 0.6 }}>
                 <div className="flex items-center gap-2 text-sm font-medium">
-                  <MapPin size={16} className="text-royal" /> 53 S. Main St, Hanover
+                  <MapPin size={16} className="text-gold" /> 53 S. Main St, Hanover
                 </div>
               </motion.div>
             </motion.div>
@@ -180,7 +180,7 @@ export default function HomePage() {
         <motion.div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
           initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 2, duration: 0.8 }}>
           <span className="text-grey-400 text-xs font-mono uppercase tracking-widest">Scroll</span>
-          <motion.div className="w-px h-12 bg-gradient-to-b from-royal to-transparent" animate={{ scaleY: [1, 0.5, 1] }} transition={{ duration: 2, repeat: Infinity }} />
+          <motion.div className="w-px h-12 bg-gradient-to-b from-gold to-transparent" animate={{ scaleY: [1, 0.5, 1] }} transition={{ duration: 2, repeat: Infinity }} />
         </motion.div>
       </section>
 
@@ -190,8 +190,8 @@ export default function HomePage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
             {features.map((feature, index) => (
               <motion.div key={feature.title} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.1 }} className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-royal/10 rounded-full flex items-center justify-center flex-shrink-0">
-                  <feature.icon className="text-royal" size={24} />
+                <div className="w-12 h-12 bg-gold/10 rounded-full flex items-center justify-center flex-shrink-0">
+                  <feature.icon className="text-gold" size={24} />
                 </div>
                 <div>
                   <div className="font-display font-bold text-black">{feature.title}</div>
@@ -207,7 +207,7 @@ export default function HomePage() {
       <section className="services-section py-24 lg:py-32">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <motion.span className="text-royal font-mono text-sm tracking-[0.3em] uppercase mb-4 block" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <motion.span className="text-gold font-mono text-sm tracking-[0.3em] uppercase mb-4 block" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               Our Services
             </motion.span>
             <motion.h2 className="font-display text-5xl md:text-6xl font-bold text-black mb-6" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
@@ -220,15 +220,15 @@ export default function HomePage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {services.map((service) => (
-              <motion.div key={service.name} className="service-card group bg-white p-8 border-l-4 border-royal shadow-sm hover:shadow-xl transition-all duration-500 relative overflow-hidden" whileHover={{ y: -8 }}>
-                <div className="absolute inset-0 bg-gradient-to-br from-royal/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+              <motion.div key={service.name} className="service-card group bg-white p-8 border-l-4 border-gold shadow-sm hover:shadow-xl transition-all duration-500 relative overflow-hidden" whileHover={{ y: -8 }}>
+                <div className="absolute inset-0 bg-gradient-to-br from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 <div className="relative">
                   <h3 className="font-display text-2xl font-bold text-black mb-3">{service.name}</h3>
                   <p className="text-grey-600 text-sm mb-4">{service.description}</p>
                   <div className="flex items-center gap-4 text-grey-600 text-sm mb-4">
-                    <span className="flex items-center gap-1"><Clock size={14} className="text-royal" /> {service.duration}</span>
+                    <span className="flex items-center gap-1"><Clock size={14} className="text-gold" /> {service.duration}</span>
                   </div>
-                  <div className="font-display text-4xl font-bold text-royal">{service.price}</div>
+                  <div className="font-display text-4xl font-bold text-gold">{service.price}</div>
                 </div>
               </motion.div>
             ))}
@@ -251,11 +251,11 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
             <div>
-              <motion.span className="text-royal font-mono text-sm tracking-[0.3em] uppercase mb-4 block" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
+              <motion.span className="text-gold font-mono text-sm tracking-[0.3em] uppercase mb-4 block" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
                 About Twisted Scissors
               </motion.span>
               <motion.h2 className="font-display text-5xl md:text-6xl font-bold text-white mb-8 leading-tight" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
-                YOUR HAIR<br /><span className="text-royal">TRANSFORMATION</span><br />AWAITS
+                YOUR HAIR<br /><span className="text-gold">TRANSFORMATION</span><br />AWAITS
               </motion.h2>
               <motion.div className="space-y-6 text-lg text-grey-300 leading-relaxed" initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: 0.2 }}>
                 <p>Welcome to our hair haven in the heart of Hanover, minutes away from Dartmouth College. With over 18 years of dedicated service to Upper Valley clients, our brand-new spot at 53 S. Main Street is ready to elevate your style.</p>
@@ -263,9 +263,9 @@ export default function HomePage() {
               </motion.div>
               
               <motion.div className="grid grid-cols-3 gap-8 mt-12 pt-12 border-t border-white/10" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.3 }}>
-                <div><div className="font-display text-4xl font-bold text-royal">18+</div><div className="text-grey-400 text-sm mt-1">Years Serving Hanover</div></div>
-                <div><div className="font-display text-4xl font-bold text-royal">20+</div><div className="text-grey-400 text-sm mt-1">Years Combined Experience</div></div>
-                <div><div className="font-display text-4xl font-bold text-royal">5.0</div><div className="text-grey-400 text-sm mt-1">Google Rating</div></div>
+                <div><div className="font-display text-4xl font-bold text-gold">18+</div><div className="text-grey-400 text-sm mt-1">Years Serving Hanover</div></div>
+                <div><div className="font-display text-4xl font-bold text-gold">20+</div><div className="text-grey-400 text-sm mt-1">Years Combined Experience</div></div>
+                <div><div className="font-display text-4xl font-bold text-gold">5.0</div><div className="text-grey-400 text-sm mt-1">Google Rating</div></div>
               </motion.div>
             </div>
             
@@ -273,8 +273,8 @@ export default function HomePage() {
               <div className="about-image relative aspect-[4/3] overflow-hidden">
                 <Image src="/images/insideview.png" alt="Inside Twisted Scissors" fill className="object-cover" />
               </div>
-              <div className="absolute -bottom-6 -right-6 w-48 h-48 border-2 border-royal/30 -z-10" />
-              <div className="absolute -top-6 -left-6 w-32 h-32 bg-royal/10 -z-10" />
+              <div className="absolute -bottom-6 -right-6 w-48 h-48 border-2 border-gold/30 -z-10" />
+              <div className="absolute -top-6 -left-6 w-32 h-32 bg-gold/10 -z-10" />
             </div>
           </div>
         </div>
@@ -284,7 +284,7 @@ export default function HomePage() {
       <section className="reviews-section py-24 lg:py-32 bg-grey-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-20">
-            <motion.span className="text-royal font-mono text-sm tracking-[0.3em] uppercase mb-4 block" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <motion.span className="text-gold font-mono text-sm tracking-[0.3em] uppercase mb-4 block" initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
               Testimonials
             </motion.span>
             <motion.h2 className="font-display text-5xl md:text-6xl font-bold text-black mb-6" initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: 0.1 }}>
@@ -297,11 +297,11 @@ export default function HomePage() {
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {reviews.map((review, index) => (
-              <motion.div key={index} className="review-card bg-white p-8 shadow-sm hover:shadow-lg transition-all duration-300 border-t-4 border-royal" whileHover={{ y: -5 }}>
+              <motion.div key={index} className="review-card bg-white p-8 shadow-sm hover:shadow-lg transition-all duration-300 border-t-4 border-gold" whileHover={{ y: -5 }}>
                 <div className="flex gap-1 mb-4">
                   {[...Array(review.rating)].map((_, i) => (
                     <motion.div key={i} initial={{ opacity: 0, scale: 0 }} whileInView={{ opacity: 1, scale: 1 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                      <Star className="text-royal fill-royal" size={20} />
+                      <Star className="text-gold fill-gold" size={20} />
                     </motion.div>
                   ))}
                 </div>
@@ -321,7 +321,7 @@ export default function HomePage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <span className="text-royal font-mono text-sm tracking-[0.3em] uppercase mb-4 block">Hours</span>
+              <span className="text-gold font-mono text-sm tracking-[0.3em] uppercase mb-4 block">Hours</span>
               <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-8">WHEN WE&apos;RE OPEN</h2>
               <div className="space-y-4">
                 {[
@@ -335,18 +335,18 @@ export default function HomePage() {
                 ].map((item, index) => (
                   <motion.div key={item.day} className="flex justify-between items-center py-3 border-b border-white/10" initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }} transition={{ delay: index * 0.05 }}>
                     <span className="text-white font-medium">{item.day}</span>
-                    <span className={item.hours === 'Closed' ? 'text-grey-500' : 'text-royal'}>{item.hours}</span>
+                    <span className={item.hours === 'Closed' ? 'text-grey-500' : 'text-gold'}>{item.hours}</span>
                   </motion.div>
                 ))}
               </div>
             </motion.div>
             
             <motion.div initial={{ opacity: 0, x: 30 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}>
-              <span className="text-royal font-mono text-sm tracking-[0.3em] uppercase mb-4 block">Location</span>
+              <span className="text-gold font-mono text-sm tracking-[0.3em] uppercase mb-4 block">Location</span>
               <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-8">FIND US</h2>
               <div className="bg-white/5 p-8 border border-white/10">
                 <div className="flex items-start gap-4 mb-6">
-                  <MapPin className="text-royal mt-1" size={24} />
+                  <MapPin className="text-gold mt-1" size={24} />
                   <div>
                     <div className="font-display text-xl font-bold text-white mb-2">Twisted Scissors</div>
                     <div className="text-grey-300">53 S. Main Street</div>
@@ -354,8 +354,8 @@ export default function HomePage() {
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <Phone className="text-royal" size={24} />
-                  <a href="tel:6032779842" className="text-grey-300 hover:text-royal transition-colors text-lg">(603) 277-9842</a>
+                  <Phone className="text-gold" size={24} />
+                  <a href="tel:6032779842" className="text-grey-300 hover:text-gold transition-colors text-lg">(603) 277-9842</a>
                 </div>
               </div>
             </motion.div>
@@ -364,7 +364,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20 bg-royal">
+      <section className="py-20 bg-gold">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-6">READY FOR A FRESH CUT?</h2>
           <p className="text-xl text-white/80 mb-8">Book your appointment today and experience the Twisted Scissors difference.</p>
@@ -404,7 +404,7 @@ export default function HomePage() {
             </div>
             <div>
               <h4 className="font-display font-bold text-lg mb-4">Book Now</h4>
-              <a href="https://bookoapp.com/book/twisted-scissors" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-royal text-white rounded-none font-semibold hover:bg-blue-700 transition-all">
+              <a href="https://bookoapp.com/book/twisted-scissors" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-gold text-white rounded-none font-semibold hover:bg-blue-700 transition-all">
                 Schedule Online
               </a>
             </div>

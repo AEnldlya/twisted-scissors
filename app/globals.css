@@ -38,7 +38,7 @@
     @apply inline-flex items-center gap-2 px-8 py-4 bg-black text-white rounded-none font-semibold hover:bg-grey-800 transition-all duration-300;
   }
   
-  .btn-royal {
-    @apply inline-flex items-center gap-2 px-8 py-4 bg-royal text-white rounded-none font-semibold hover:bg-blue-700 transition-all duration-300;
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-8 py-4 bg-gold text-black rounded-none font-semibold hover:bg-gold-light transition-all duration-300;
   }
 }

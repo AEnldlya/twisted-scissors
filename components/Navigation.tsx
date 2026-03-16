@@ -25,23 +25,23 @@ export default function Navigation() {
               <Image src="/images/logo.png" alt="Twisted Scissors" fill className="object-contain" />
             </div>
             <span className="font-display text-2xl font-bold text-white tracking-wide">
-              TWISTED <span className="text-royal">SCISSORS</span>
+              TWISTED <span className="text-gold">SCISSORS</span>
             </span>
           </Link>
 
           {/* Desktop Nav */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} className="text-white/80 hover:text-royal transition-colors font-medium">
+              <Link key={link.href} href={link.href} className="text-white/80 hover:text-gold transition-colors font-medium">
                 {link.label}
               </Link>
             ))}
-            <a href="tel:6032779842" className="flex items-center gap-2 text-royal hover:text-white transition-colors">
+            <a href="tel:6032779842" className="flex items-center gap-2 text-gold hover:text-white transition-colors">
               <Phone size={18} />
               <span className="font-medium">(603) 277-9842</span>
             </a>
             <a href="https://bookoapp.com/book/twisted-scissors" target="_blank" rel="noopener noreferrer"
-              className="px-6 py-3 bg-royal text-white font-semibold hover:bg-blue-700 transition-all">
+              className="px-6 py-3 bg-gold text-white font-semibold hover:bg-blue-700 transition-all">
               Book Now
             </a>
           </div>
@@ -58,16 +58,16 @@ export default function Navigation() {
         <div className="md:hidden bg-black border-t border-white/10">
           <div className="px-4 py-6 space-y-4">
             {navLinks.map((link) => (
-              <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className="block text-white/80 hover:text-royal transition-colors font-medium text-lg">
+              <Link key={link.href} href={link.href} onClick={() => setIsOpen(false)} className="block text-white/80 hover:text-gold transition-colors font-medium text-lg">
                 {link.label}
               </Link>
             ))}
-            <a href="tel:6032779842" className="flex items-center gap-2 text-royal py-2">
+            <a href="tel:6032779842" className="flex items-center gap-2 text-gold py-2">
               <Phone size={18} />
               <span>(603) 277-9842</span>
             </a>
             <a href="https://bookoapp.com/book/twisted-scissors" target="_blank" rel="noopener noreferrer"
-              className="block w-full text-center px-8 py-4 bg-royal text-white font-semibold mt-4" onClick={() => setIsOpen(false)}>
+              className="block w-full text-center px-8 py-4 bg-gold text-white font-semibold mt-4" onClick={() => setIsOpen(false)}>
               Book Now
             </a>
           </div>
