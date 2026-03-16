@@ -35,10 +35,10 @@
   }
   
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-8 py-4 bg-[#1A1A2E] text-[#C9A227] rounded-none font-semibold hover:bg-[#2A2A4E] transition-all duration-300;
+    @apply inline-flex items-center gap-2 px-8 py-4 bg-black text-white rounded-none font-semibold hover:bg-grey-800 transition-all duration-300;
   }
   
-  .btn-gold {
-    @apply inline-flex items-center gap-2 px-8 py-4 bg-[#C9A227] text-[#1A1A2E] rounded-none font-semibold hover:bg-[#D9B237] transition-all duration-300;
+  .btn-royal {
+    @apply inline-flex items-center gap-2 px-8 py-4 bg-royal text-white rounded-none font-semibold hover:bg-blue-700 transition-all duration-300;
   }
 }
