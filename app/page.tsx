@@ -223,6 +223,83 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Before & After Gallery Section */}
+      <section className="py-24 lg:py-32 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16">
+            <motion.span 
+              className="text-gold font-mono text-sm tracking-[0.3em] uppercase mb-4 block"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              Transformations
+            </motion.span>
+            <motion.h2 
+              className="font-display text-5xl md:text-6xl font-bold text-black mb-6"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              BEFORE & AFTER
+            </motion.h2>
+            <motion.p 
+              className="text-grey-600 text-xl max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              Real results from real clients. See the transformation.
+            </motion.p>
+          </div>
+          
+          {/* Before/After Grid - Placeholder for client photos */}
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {[1, 2, 3].map((item, index) => (
+              <motion.div
+                key={item}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.15, duration: 0.6 }}
+                className="group"
+              >
+                <div className="relative aspect-[4/3] bg-grey-100 rounded-lg overflow-hidden border-2 border-dashed border-grey-300 flex flex-col items-center justify-center">
+                  <div className="text-grey-400 text-center p-8">
+                    <div className="text-4xl mb-4">📸</div>
+                    <div className="font-display text-lg font-bold text-grey-500 mb-2">Before & After #{item}</div>
+                    <div className="text-sm text-grey-400">Upload client transformation photos here</div>
+                  </div>
+                  
+                  {/* Overlay on hover */}
+                  <div className="absolute inset-0 bg-gold/90 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
+                    <span className="text-black font-display text-xl font-bold">Coming Soon</span>
+                  </div>
+                </div>
+                <div className="mt-4 text-center">
+                  <div className="font-display font-bold text-black">Client Transformation</div>
+                  <div className="text-grey-500 text-sm">Haircut & Style</div>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+          
+          <motion.div 
+            className="text-center mt-12"
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.5 }}
+          >
+            <Link href="/gallery" className="inline-flex items-center gap-2 text-gold font-semibold hover:underline">
+              View Full Gallery <ArrowRight size={20} />
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Reviews Section */}
       <section className="py-24 lg:py-32 bg-grey-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
