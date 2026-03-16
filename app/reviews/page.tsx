@@ -7,7 +7,15 @@ import Navigation from '@/components/Navigation';
 
 export default function ReviewsPage() {
   const reviews = [
-    { name: 'Fin', rating: 5, text: 'Always the best haircut in Hanover!', date: '2024' },
+    { name: 'Rusty S.', rating: 5, text: 'Brook listens to me, rather than merely doing the same thing every time. She\'s always good-humored, and respectful of schedules. I doubt I\'ll ever use a different person for my hair.', date: 'Dec 2024' },
+    { name: 'T. N.', rating: 5, text: 'Brooke is great! She\'s pretty skilled with a pair of scissors and a razor for a men\'s haircut. Highly recommend!', date: 'Jul 2024' },
+    { name: 'Susan Henderson', rating: 5, text: 'Great haircuts by Brooke. Have been there many times and always happy with how my hair is cut. Very comfy and clean salon. Super friendly atmosphere.', date: 'Jul 2024' },
+    { name: 'Lynne Weaver', rating: 5, text: 'Thank you Brooke for taking the time to get my color and style just perfect!! I absolutely love it!', date: 'May 2024' },
+    { name: 'Meredith Erickson', rating: 5, text: 'Stylist was friendly, haircut was exactly what I requested, salon was super clean and welcoming, and the prices were reasonable. I would definitely come back!', date: 'Feb 2024' },
+    { name: 'Reagan Quinn', rating: 5, text: 'Brooke is super friendly, and the salon is very nice and clean! Brooke did a wonderful job cutting and styling my hair, and the price was extremely reasonable. Would highly recommend!!', date: 'Feb 2024' },
+    { name: 'Larissa Pyer', rating: 5, text: 'Brooke was lovely and did a great job on my hair! I was able to book an appointment for the same day and given the location found the rates to be very reasonable. Exactly what I was looking for and I will surely be back!', date: 'Feb 2024' },
+    { name: 'X K', rating: 5, text: 'This place is located right in downtown Hanover, in the Nugget building. Brooke, my hair stylist, did a great job. I told her what cut and style I wanted for my haircut, and she did it perfectly and quickly! I will definitely come here again for a haircut!', date: 'Sep 2023' },
+    { name: 'bwev Betz', rating: 5, text: 'Loved my color and cut!! Very friendly hairdresser!', date: 'Aug 2023' },
   ];
 
   return (
