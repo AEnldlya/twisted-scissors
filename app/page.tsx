@@ -19,6 +19,7 @@ export default function HomePage() {
   const aboutRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
+  const triggersRef = useRef<ScrollTrigger[]>([]);
 
   const services = [
     { name: 'Classic Haircut', price: '$35', duration: '30 min', description: 'A precision cut tailored to your style' },
@@ -38,84 +39,110 @@ export default function HomePage() {
 
   useEffect(() => {
     const ctx = gsap.context(() => {
-      // Hero parallax
+      // Hero parallax - multi-layer depth effect
       if (heroRef.current && heroImageRef.current) {
-        gsap.to(heroImageRef.current, {
-          yPercent: 20,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: 'top top',
-            end: 'bottom top',
-            scrub: 1,
-          },
+        const st = ScrollTrigger.create({
+          trigger: heroRef.current,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+          onUpdate: (self) => {
+            if (heroImageRef.current) {
+              gsap.set(heroImageRef.current, {
+                yPercent: self.progress * 30,
+                scale: 1 + self.progress * 0.1,
+              });
+            }
+          }
         });
+        triggersRef.current.push(st);
       }
 
-      // Hero content fade out
-      if (heroContentRef.current) {
-        gsap.to(heroContentRef.current, {
-          opacity: 0,
-          y: -50,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: heroRef.current,
-            start: 'top top',
-            end: '50% top',
-            scrub: 1,
-          },
+      // Hero content fade out with parallax
+      if (heroContentRef.current && heroRef.current) {
+        const st = ScrollTrigger.create({
+          trigger: heroRef.current,
+          start: 'top top',
+          end: '50% top',
+          scrub: 1,
+          onUpdate: (self) => {
+            if (heroContentRef.current) {
+              gsap.set(heroContentRef.current, {
+                opacity: 1 - self.progress,
+                y: -self.progress * 80,
+              });
+            }
+          }
         });
+        triggersRef.current.push(st);
       }
 
-      // Services section - diagonal clip reveal
+      // Services section - diagonal clip reveal with stagger
       if (servicesRef.current) {
         const serviceCards = servicesRef.current.querySelectorAll('.service-card');
         serviceCards.forEach((card, index) => {
-          gsap.fromTo(card,
-            { 
-              clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
-              opacity: 0 
+          gsap.set(card, { 
+            clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
+            opacity: 0 
+          });
+          
+          const st = ScrollTrigger.create({
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(card, {
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                opacity: 1,
+                duration: 1.2,
+                ease: 'power3.inOut',
+                delay: index * 0.15,
+              });
             },
-            {
-              clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-              opacity: 1,
-              duration: 1,
-              ease: 'power3.inOut',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-              delay: index * 0.1,
+            onLeaveBack: () => {
+              gsap.to(card, {
+                clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.inOut',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         });
       }
 
-      // About section - shear reveal
+      // About section - shear reveal with stagger
       if (aboutRef.current) {
         const aboutElements = aboutRef.current.querySelectorAll('.about-reveal');
         aboutElements.forEach((el, index) => {
-          gsap.fromTo(el,
-            { 
-              y: 60,
-              skewY: 3,
-              opacity: 0 
+          gsap.set(el, { y: 60, skewY: 3, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(el, {
+                y: 0,
+                skewY: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power3.out',
+                delay: index * 0.12,
+              });
             },
-            {
-              y: 0,
-              skewY: 0,
-              opacity: 1,
-              duration: 1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-              delay: index * 0.15,
+            onLeaveBack: () => {
+              gsap.to(el, {
+                y: 60,
+                skewY: 3,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power3.in',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         });
       }
 
@@ -123,49 +150,71 @@ export default function HomePage() {
       if (reviewsRef.current) {
         const reviewCards = reviewsRef.current.querySelectorAll('.review-card');
         reviewCards.forEach((card, index) => {
-          gsap.fromTo(card,
-            { 
-              y: 40,
-              skewY: 2,
-              opacity: 0 
+          gsap.set(card, { y: 50, skewY: 2, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: card,
+            start: 'top 90%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(card, {
+                y: 0,
+                skewY: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: 'power3.out',
+                delay: index * 0.1,
+              });
             },
-            {
-              y: 0,
-              skewY: 0,
-              opacity: 1,
-              duration: 0.8,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 90%',
-                toggleActions: 'play none none reverse',
-              },
-              delay: index * 0.1,
+            onLeaveBack: () => {
+              gsap.to(card, {
+                y: 50,
+                skewY: 2,
+                opacity: 0,
+                duration: 0.5,
+                ease: 'power3.in',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         });
       }
 
-      // CTA section
+      // CTA section - scale reveal
       if (ctaRef.current) {
-        gsap.fromTo(ctaRef.current,
-          { scale: 0.95, opacity: 0 },
-          {
-            scale: 1,
-            opacity: 1,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: ctaRef.current,
-              start: 'top 80%',
-              toggleActions: 'play none none reverse',
-            },
+        gsap.set(ctaRef.current, { scale: 0.95, opacity: 0 });
+        
+        const st = ScrollTrigger.create({
+          trigger: ctaRef.current,
+          start: 'top 80%',
+          toggleActions: 'play none none reverse',
+          onEnter: () => {
+            gsap.to(ctaRef.current, {
+              scale: 1,
+              opacity: 1,
+              duration: 1.2,
+              ease: 'power3.out',
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to(ctaRef.current, {
+              scale: 0.95,
+              opacity: 0,
+              duration: 0.6,
+              ease: 'power3.in',
+            });
           }
-        );
+        });
+        triggersRef.current.push(st);
       }
     });
 
-    return () => ctx.revert();
+    return () => {
+      // Clean up all ScrollTriggers
+      triggersRef.current.forEach(st => st.kill());
+      triggersRef.current = [];
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -178,7 +227,7 @@ export default function HomePage() {
         {/* Background Image with Parallax */}
         <div 
           ref={heroImageRef}
-          className="absolute inset-0 z-0"
+          className="absolute inset-0 z-0 will-change-transform"
         >
           <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a] via-[#1a1a1a]/80 to-transparent z-10" />
           <div className="absolute inset-0 bg-gradient-to-t from-[#1a1a1a] via-transparent to-transparent z-10" />
@@ -186,24 +235,29 @@ export default function HomePage() {
             src="/images/insideview.png"
             alt="Twisted Scissors Interior"
             fill
-            className="object-cover opacity-40"
+            className="object-cover opacity-50"
             priority
           />
         </div>
 
         {/* Steam/Mist Particles */}
         <div className="steam-container">
-          {[...Array(5)].map((_, i) => (
+          {[...Array(6)].map((_, i) => (
             <div
               key={i}
               className="steam-particle"
               style={{
-                left: `${20 + i * 15}%`,
-                animationDelay: `${i * 1.5}s`,
-                animationDuration: `${6 + i * 2}s`,
+                left: `${15 + i * 14}%`,
+                animationDelay: `${i * 1.2}s`,
+                animationDuration: `${7 + i * 1.5}s`,
               }}
             />
           ))}
+        </div>
+
+        {/* Barber Pole Stripe Accent */}
+        <div className="absolute top-0 right-0 w-2 h-full opacity-20 z-10">
+          <div className="w-full h-full barber-stripes-animated" />
         </div>
 
         {/* Hero Content - Asymmetric Layout */}
@@ -250,6 +304,7 @@ export default function HomePage() {
                     rel="noopener noreferrer"
                     className="btn-copper"
                     data-magnetic
+                    data-cursor-text="Book"
                   >
                     Book Appointment
                     <ArrowRight size={18} />
@@ -344,7 +399,7 @@ export default function HomePage() {
           {/* Services Grid - Offset Cards */}
           <div className="grid md:grid-cols-2 gap-6">
             {services.map((service, index) => (
-              <TiltCard key={service.name} className="service-card">
+              <TiltCard key={service.name} className="service-card" glareEnabled={true}>
                 <div 
                   className={`bg-white p-8 lg:p-10 border-l-4 border-[#B87333] shadow-sharp hover:shadow-sharp-copper transition-shadow duration-500 ${
                     index % 2 === 1 ? 'md:mt-12' : ''
@@ -388,7 +443,7 @@ export default function HomePage() {
 
       {/* Razor Line Divider */}
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <div className="razor-line" data-scroll-reveal />
+        <div className="razor-line" />
       </div>
 
       {/* About Section - Editorial Layout */}
@@ -404,7 +459,7 @@ export default function HomePage() {
             {/* Image - Overlapping */}
             <div className="lg:col-span-6 about-reveal">
               <div className="relative">
-                <div className="aspect-[4/5] relative overflow-hidden">
+                <div className="aspect-[4/5] relative overflow-hidden mirror-hover">
                   <Image
                     src="/images/insideview.png"
                     alt="Twisted Scissors Interior"
@@ -483,14 +538,25 @@ export default function HomePage() {
         className="py-24 lg:py-32 bg-[#F8F6F3]"
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          {/* Section Header */}
-          <div className="text-center mb-16">
-            <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-4">
-              Testimonials
-            </span>
-            <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-[#1a1a1a]">
-              <TextReveal>What Clients Say</TextReveal>
-            </h2>
+          {/* Section Header - Editorial */}
+          <div className="grid lg:grid-cols-12 gap-8 mb-16">
+            <div className="lg:col-span-6">
+              <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-4">
+                Testimonials
+              </span>
+              <h2 className="font-display text-4xl md:text-5xl lg:text-6xl text-[#1a1a1a] leading-[1.1]">
+                <TextReveal>What Clients</TextReveal>
+                <br />
+                <span className="text-[#B87333]">
+                  <TextReveal delay={0.2}>Are Saying</TextReveal>
+                </span>
+              </h2>
+            </div>
+            <div className="lg:col-span-4 lg:col-start-9 flex items-end">
+              <p className="font-body text-lg text-[#1a1a1a]/70">
+                Real reviews from real clients. No filters, just honest feedback.
+              </p>
+            </div>
           </div>
 
           {/* Reviews Grid - Masonry-style */}
@@ -541,6 +607,7 @@ export default function HomePage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-[#1a1a1a] text-white font-body text-sm tracking-wider uppercase hover:bg-white hover:text-[#1a1a1a] transition-all duration-300"
               data-magnetic
+              data-cursor-text="Book"
               style={{ borderRadius: 0 }}
             >
               Book Online

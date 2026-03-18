@@ -21,20 +21,6 @@
 }
 
 /* Fontshare Font Imports */
-@font-face {
-  font-family: 'General Sans';
-  src: url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
-  font-weight: 400 700;
-  font-display: swap;
-}
-
-@font-face {
-  font-family: 'Zodiak';
-  src: url('https://api.fontshare.com/v2/css?f[]=zodiak@400,500,600,700&display=swap');
-  font-weight: 400 700;
-  font-display: swap;
-}
-
 @import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=zodiak@400,500,600,700&display=swap');
 
 @layer base {
@@ -46,6 +32,7 @@
     @apply bg-[#F8F6F3] text-[#1a1a1a] antialiased;
     font-family: 'General Sans', system-ui, sans-serif;
     cursor: none;
+    overflow-x: hidden;
   }
   
   /* Hide default cursor on interactive elements */
@@ -170,6 +157,16 @@
     transition: clip-path 1.4s cubic-bezier(0.23, 1, 0.32, 1);
   }
   
+  /* Scissor snip clip-path animation */
+  .clip-scissor-snip {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  
+  .clip-scissor-snip.revealed {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transition: clip-path 1s cubic-bezier(0.76, 0, 0.24, 1);
+  }
+  
   /* Razor line divider */
   .razor-line {
     height: 1px;
@@ -183,6 +180,29 @@
     transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
   }
   
+  /* Razor line draw animation */
+  .razor-draw {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .razor-draw::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: #B87333;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .razor-draw.revealed::after {
+    transform: scaleX(1);
+  }
+  
   /* Barber pole stripe background */
   .barber-stripes {
     background: repeating-linear-gradient(
@@ -192,6 +212,27 @@
       rgba(184, 115, 51, 0.03) 10px,
       rgba(184, 115, 51, 0.03) 20px
     );
+  }
+  
+  /* Animated barber pole stripes */
+  .barber-stripes-animated {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 20px,
+      rgba(184, 115, 51, 0.05) 20px,
+      rgba(184, 115, 51, 0.05) 40px
+    );
+    animation: stripe-scroll 20s linear infinite;
+  }
+  
+  @keyframes stripe-scroll {
+    0% {
+      background-position: 0 0;
+    }
+    100% {
+      background-position: 56px 0;
+    }
   }
   
   /* Mirror reflection effect */
@@ -268,7 +309,7 @@
     position: absolute;
     width: 100px;
     height: 100px;
-    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
     border-radius: 50%;
     animation: float-up 8s infinite ease-in-out;
   }
@@ -279,7 +320,7 @@
       opacity: 0;
     }
     50% {
-      opacity: 0.3;
+      opacity: 0.2;
     }
     100% {
       transform: translateY(-100%) scale(1.5);
@@ -339,24 +380,38 @@
     background: #F8F6F3;
     padding: 0 20px;
   }
-}
-
-@layer utilities {
-  /* Perspective for 3D effects */
-  .perspective-1000 {
-    perspective: 1000px;
+  
+  /* Scissor snip animation */
+  .scissor-icon {
+    display: inline-block;
+    transition: transform 0.3s ease;
   }
   
-  .preserve-3d {
-    transform-style: preserve-3d;
+  .scissor-icon.snip {
+    animation: snip-action 0.4s ease-in-out;
   }
   
-  /* Copper gradient text */
-  .text-copper-gradient {
-    background: linear-gradient(135deg, #B87333 0%, #D4915A 50%, #B87333 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  @keyframes snip-action {
+    0%, 100% {
+      transform: rotate(0deg);
+    }
+    50% {
+      transform: rotate(-15deg);
+    }
+  }
+  
+  /* Parallax layers */
+  .parallax-slow {
+    will-change: transform;
+  }
+  
+  .parallax-fast {
+    will-change: transform;
+  }
+  
+  /* Magnetic button effect base */
+  [data-magnetic] {
+    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   }
   
   /* Editorial layout helpers */
@@ -390,5 +445,76 @@
   
   .shadow-sharp-copper {
     box-shadow: 8px 8px 0 rgba(184, 115, 51, 0.2);
+  }
+  
+  /* Copper gradient text */
+  .text-copper-gradient {
+    background: linear-gradient(135deg, #B87333 0%, #D4915A 50%, #B87333 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Reveal animations for scroll */
+  .reveal-up {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .reveal-up.revealed {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .reveal-shear {
+    opacity: 0;
+    transform: translateY(60px) skewY(3deg);
+    transition: opacity 1s cubic-bezier(0.23, 1, 0.32, 1), transform 1s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .reveal-shear.revealed {
+    opacity: 1;
+    transform: translateY(0) skewY(0);
+  }
+  
+  /* Stagger children */
+  .stagger-children > * {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  
+  .stagger-children.revealed > *:nth-child(1) { transition-delay: 0s; }
+  .stagger-children.revealed > *:nth-child(2) { transition-delay: 0.1s; }
+  .stagger-children.revealed > *:nth-child(3) { transition-delay: 0.2s; }
+  .stagger-children.revealed > *:nth-child(4) { transition-delay: 0.3s; }
+  .stagger-children.revealed > *:nth-child(5) { transition-delay: 0.4s; }
+  .stagger-children.revealed > *:nth-child(6) { transition-delay: 0.5s; }
+  
+  .stagger-children.revealed > * {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+}
+
+@layer utilities {
+  /* Perspective for 3D effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  /* Hide scrollbar but allow scrolling */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
   }
 }

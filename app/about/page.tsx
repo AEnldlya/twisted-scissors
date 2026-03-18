@@ -14,7 +14,9 @@ export default function AboutPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const storyRef = useRef<HTMLDivElement>(null);
   const valuesRef = useRef<HTMLDivElement>(null);
+  const shopRef = useRef<HTMLDivElement>(null);
   const locationRef = useRef<HTMLDivElement>(null);
+  const triggersRef = useRef<ScrollTrigger[]>([]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -22,16 +24,31 @@ export default function AboutPage() {
       if (heroRef.current) {
         const heroContent = heroRef.current.querySelector('.hero-content');
         if (heroContent) {
-          gsap.fromTo(heroContent,
-            { y: 60, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1.2,
-              ease: 'power3.out',
-              delay: 0.3,
+          gsap.set(heroContent, { y: 60, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: heroRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(heroContent, {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: 'power3.out',
+                delay: 0.2,
+              });
+            },
+            onLeaveBack: () => {
+              gsap.to(heroContent, {
+                y: 60,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power3.in',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         }
       }
 
@@ -39,47 +56,133 @@ export default function AboutPage() {
       if (storyRef.current) {
         const elements = storyRef.current.querySelectorAll('.story-reveal');
         elements.forEach((el, index) => {
-          gsap.fromTo(el,
-            { y: 50, skewY: 2, opacity: 0 },
-            {
-              y: 0,
-              skewY: 0,
-              opacity: 1,
-              duration: 1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-              delay: index * 0.1,
+          gsap.set(el, { y: 50, skewY: 2, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(el, {
+                y: 0,
+                skewY: 0,
+                opacity: 1,
+                duration: 1,
+                ease: 'power3.out',
+                delay: index * 0.1,
+              });
+            },
+            onLeaveBack: () => {
+              gsap.to(el, {
+                y: 50,
+                skewY: 2,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power3.in',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         });
+
+        // Image parallax
+        const storyImage = storyRef.current.querySelector('.story-image');
+        if (storyImage) {
+          const st = ScrollTrigger.create({
+            trigger: storyRef.current,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+            onUpdate: (self) => {
+              gsap.set(storyImage, {
+                y: (self.progress - 0.5) * 30,
+              });
+            }
+          });
+          triggersRef.current.push(st);
+        }
       }
 
       // Values cards - clip reveal
       if (valuesRef.current) {
         const cards = valuesRef.current.querySelectorAll('.value-card');
         cards.forEach((card, index) => {
-          gsap.fromTo(card,
-            { 
-              clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
-              opacity: 0 
+          gsap.set(card, { 
+            clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
+            opacity: 0 
+          });
+          
+          const st = ScrollTrigger.create({
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(card, {
+                clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+                opacity: 1,
+                duration: 1.2,
+                ease: 'power3.inOut',
+                delay: index * 0.15,
+              });
             },
-            {
-              clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
-              opacity: 1,
-              duration: 1,
-              ease: 'power3.inOut',
-              scrollTrigger: {
-                trigger: card,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-              delay: index * 0.15,
+            onLeaveBack: () => {
+              gsap.to(card, {
+                clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power3.inOut',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
+        });
+      }
+
+      // Shop section - staggered reveal
+      if (shopRef.current) {
+        const shopElements = shopRef.current.querySelectorAll('.shop-reveal');
+        shopElements.forEach((el, index) => {
+          gsap.set(el, { y: 40, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(el, {
+                y: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: 'power3.out',
+                delay: index * 0.1,
+              });
+            },
+            onLeaveBack: () => {
+              gsap.to(el, {
+                y: 40,
+                opacity: 0,
+                duration: 0.5,
+                ease: 'power3.in',
+              });
+            }
+          });
+          triggersRef.current.push(st);
+        });
+
+        // Image hover scale
+        const shopImages = shopRef.current.querySelectorAll('.shop-image');
+        shopImages.forEach((img) => {
+          const st = ScrollTrigger.create({
+            trigger: img,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 1,
+            onUpdate: (self) => {
+              const scale = 1 + Math.sin(self.progress * Math.PI) * 0.05;
+              gsap.set(img, { scale });
+            }
+          });
+          triggersRef.current.push(st);
         });
       }
 
@@ -87,26 +190,40 @@ export default function AboutPage() {
       if (locationRef.current) {
         const elements = locationRef.current.querySelectorAll('.location-reveal');
         elements.forEach((el, index) => {
-          gsap.fromTo(el,
-            { y: 40, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.8,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-              delay: index * 0.1,
+          gsap.set(el, { y: 40, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: el,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(el, {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                ease: 'power3.out',
+                delay: index * 0.08,
+              });
+            },
+            onLeaveBack: () => {
+              gsap.to(el, {
+                y: 40,
+                opacity: 0,
+                duration: 0.4,
+                ease: 'power3.in',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         });
       }
     });
 
-    return () => ctx.revert();
+    return () => {
+      triggersRef.current.forEach(st => st.kill());
+      triggersRef.current = [];
+      ctx.revert();
+    };
   }, []);
 
   const values = [
@@ -145,6 +262,11 @@ export default function AboutPage() {
           />
         </div>
 
+        {/* Barber Pole Accent */}
+        <div className="absolute top-0 right-0 w-2 h-full opacity-20 z-10">
+          <div className="w-full h-full barber-stripes-animated" />
+        </div>
+
         {/* Content */}
         <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 py-32">
           <div className="hero-content max-w-3xl">
@@ -181,8 +303,8 @@ export default function AboutPage() {
           <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
             {/* Image - Offset */}
             <div className="lg:col-span-5 lg:col-start-1">
-              <div className="relative story-reveal">
-                <div className="aspect-[3/4] relative overflow-hidden">
+              <div className="relative story-reveal story-image">
+                <div className="aspect-[3/4] relative overflow-hidden mirror-hover">
                   <Image
                     src="/images/insideview.png"
                     alt="Twisted Scissors Interior"
@@ -289,26 +411,26 @@ export default function AboutPage() {
       </section>
 
       {/* The Shop Section */}
-      <section className="py-24 lg:py-32 bg-[#F8F6F3]">
+      <section ref={shopRef} className="py-24 lg:py-32 bg-[#F8F6F3]">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Content */}
             <div>
-              <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
+              <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6 shop-reveal">
                 The Space
               </span>
-              <h2 className="font-display text-4xl md:text-5xl text-[#1a1a1a] leading-[1.1] mb-8">
+              <h2 className="font-display text-4xl md:text-5xl text-[#1a1a1a] leading-[1.1] mb-8 shop-reveal">
                 A Shop Built<br />
                 <span className="text-[#B87333]">for Quality</span>
               </h2>
               
               <div className="space-y-6 font-body text-lg text-[#1a1a1a]/70 leading-relaxed">
-                <p>
+                <p className="shop-reveal">
                   Twisted Scissors sits at 53 S. Main Street in the heart of Hanover, 
                   just steps from Dartmouth College. The space is clean, comfortable, 
                   and designed for one thing: great haircuts.
                 </p>
-                <p>
+                <p className="shop-reveal">
                   Brooke has created an environment where clients can relax, chat if 
                   they want to, or enjoy quiet focus. It&apos;s a judgment-free zone where 
                   everyone is welcome—men, women, students, professionals, and families.
@@ -316,19 +438,19 @@ export default function AboutPage() {
               </div>
 
               <div className="grid grid-cols-2 gap-6 mt-10">
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 shop-reveal">
                   <div className="w-2 h-2 bg-[#B87333]" />
                   <span className="font-body text-[#1a1a1a]/80">Clean & Modern</span>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 shop-reveal">
                   <div className="w-2 h-2 bg-[#B87333]" />
                   <span className="font-body text-[#1a1a1a]/80">Welcoming Atmosphere</span>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 shop-reveal">
                   <div className="w-2 h-2 bg-[#B87333]" />
                   <span className="font-body text-[#1a1a1a]/80">Downtown Location</span>
                 </div>
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 shop-reveal">
                   <div className="w-2 h-2 bg-[#B87333]" />
                   <span className="font-body text-[#1a1a1a]/80">Easy Parking</span>
                 </div>
@@ -337,20 +459,20 @@ export default function AboutPage() {
 
             {/* Image Grid */}
             <div className="grid grid-cols-2 gap-4">
-              <div className="aspect-[3/4] relative overflow-hidden">
+              <div className="aspect-[3/4] relative overflow-hidden shop-image">
                 <Image
                   src="/images/frontdoor.png"
                   alt="Twisted Scissors Exterior"
                   fill
-                  className="object-cover hover:scale-105 transition-transform duration-700"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
                 />
               </div>
-              <div className="aspect-[3/4] relative overflow-hidden mt-8">
+              <div className="aspect-[3/4] relative overflow-hidden mt-8 shop-image">
                 <Image
                   src="/images/insideview.png"
                   alt="Twisted Scissors Interior"
                   fill
-                  className="object-cover hover:scale-105 transition-transform duration-700"
+                  className="object-cover transition-transform duration-700 hover:scale-105"
                 />
               </div>
             </div>
@@ -425,7 +547,7 @@ export default function AboutPage() {
             <div>
               <div className="location-reveal">
                 <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
-              Schedule
+                  Schedule
                 </span>
               </div>
               <h2 className="font-display text-4xl md:text-5xl text-white mb-10 location-reveal">
@@ -442,7 +564,7 @@ export default function AboutPage() {
                   { day: 'Friday', hours: '9AM - 5PM' },
                   { day: 'Saturday', hours: '9AM - 12:30PM' },
                   { day: 'Sunday', hours: 'Closed' }
-                ].map((item, index) => (
+                ].map((item) => (
                   <div 
                     key={item.day}
                     className="flex justify-between items-center py-4 border-b border-white/10 location-reveal"
@@ -479,6 +601,7 @@ export default function AboutPage() {
               rel="noopener noreferrer"
               className="inline-flex items-center gap-3 px-10 py-5 bg-[#1a1a1a] text-white font-body text-sm tracking-wider uppercase hover:bg-white hover:text-[#1a1a1a] transition-all duration-300"
               data-magnetic
+              data-cursor-text="Book"
               style={{ borderRadius: 0 }}
             >
               Book Online

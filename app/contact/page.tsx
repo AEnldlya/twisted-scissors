@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { MapPin, Phone, Clock, Mail, ArrowRight, Calendar, Send } from 'lucide-react';
+import { MapPin, Phone, Clock, ArrowRight, Calendar, Send } from 'lucide-react';
 import TextReveal from '@/components/TextReveal';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,6 +14,7 @@ export default function ContactPage() {
   const heroRef = useRef<HTMLDivElement>(null);
   const infoRef = useRef<HTMLDivElement>(null);
   const formRef = useRef<HTMLDivElement>(null);
+  const triggersRef = useRef<ScrollTrigger[]>([]);
   
   const [formData, setFormData] = useState({
     name: '',
@@ -52,61 +53,100 @@ export default function ContactPage() {
       if (heroRef.current) {
         const heroContent = heroRef.current.querySelector('.hero-content');
         if (heroContent) {
-          gsap.fromTo(heroContent,
-            { y: 60, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 1.2,
-              ease: 'power3.out',
-              delay: 0.3,
+          gsap.set(heroContent, { y: 60, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: heroRef.current,
+            start: 'top 80%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(heroContent, {
+                y: 0,
+                opacity: 1,
+                duration: 1.2,
+                ease: 'power3.out',
+                delay: 0.2,
+              });
+            },
+            onLeaveBack: () => {
+              gsap.to(heroContent, {
+                y: 60,
+                opacity: 0,
+                duration: 0.6,
+                ease: 'power3.in',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         }
       }
 
-      // Info section reveal
+      // Info section reveal - staggered cards
       if (infoRef.current) {
-        const elements = infoRef.current.querySelectorAll('.info-reveal');
-        elements.forEach((el, index) => {
-          gsap.fromTo(el,
-            { y: 40, opacity: 0 },
-            {
-              y: 0,
-              opacity: 1,
-              duration: 0.8,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: el,
-                start: 'top 85%',
-                toggleActions: 'play none none reverse',
-              },
-              delay: index * 0.1,
+        const cards = infoRef.current.querySelectorAll('.info-card');
+        cards.forEach((card, index) => {
+          gsap.set(card, { y: 50, opacity: 0 });
+          
+          const st = ScrollTrigger.create({
+            trigger: card,
+            start: 'top 85%',
+            toggleActions: 'play none none reverse',
+            onEnter: () => {
+              gsap.to(card, {
+                y: 0,
+                opacity: 1,
+                duration: 0.9,
+                ease: 'power3.out',
+                delay: index * 0.15,
+              });
+            },
+            onLeaveBack: () => {
+              gsap.to(card, {
+                y: 50,
+                opacity: 0,
+                duration: 0.5,
+                ease: 'power3.in',
+              });
             }
-          );
+          });
+          triggersRef.current.push(st);
         });
       }
 
-      // Form section
+      // Form section - scale and fade
       if (formRef.current) {
-        gsap.fromTo(formRef.current,
-          { y: 60, opacity: 0 },
-          {
-            y: 0,
-            opacity: 1,
-            duration: 1,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: formRef.current,
-              start: 'top 85%',
-              toggleActions: 'play none none reverse',
-            },
+        gsap.set(formRef.current, { y: 60, opacity: 0 });
+        
+        const st = ScrollTrigger.create({
+          trigger: formRef.current,
+          start: 'top 85%',
+          toggleActions: 'play none none reverse',
+          onEnter: () => {
+            gsap.to(formRef.current, {
+              y: 0,
+              opacity: 1,
+              duration: 1,
+              ease: 'power3.out',
+            });
+          },
+          onLeaveBack: () => {
+            gsap.to(formRef.current, {
+              y: 60,
+              opacity: 0,
+              duration: 0.5,
+              ease: 'power3.in',
+            });
           }
-        );
+        });
+        triggersRef.current.push(st);
       }
     });
 
-    return () => ctx.revert();
+    return () => {
+      triggersRef.current.forEach(st => st.kill());
+      triggersRef.current = [];
+      ctx.revert();
+    };
   }, []);
 
   const contactInfo = [
@@ -156,6 +196,11 @@ export default function ContactPage() {
           />
         </div>
 
+        {/* Barber Pole Accent */}
+        <div className="absolute top-0 right-0 w-2 h-full opacity-20 z-10">
+          <div className="w-full h-full barber-stripes-animated" />
+        </div>
+
         {/* Content */}
         <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 py-32">
           <div className="hero-content max-w-3xl">
@@ -190,10 +235,10 @@ export default function ContactPage() {
       >
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-3 gap-8">
-            {contactInfo.map((info, index) => (
+            {contactInfo.map((info) => (
               <div 
                 key={info.title}
-                className="info-reveal bg-white p-8 lg:p-10 border-l-4 border-[#B87333] shadow-sharp"
+                className="info-card bg-white p-8 lg:p-10 border-l-4 border-[#B87333] shadow-sharp"
               >
                 <div className="w-14 h-14 bg-[#1a1a1a] flex items-center justify-center mb-6">
                   <info.icon className="w-7 h-7 text-[#B87333]" />
@@ -215,6 +260,7 @@ export default function ContactPage() {
                     target={info.action.href.startsWith('http') ? '_blank' : undefined}
                     rel={info.action.href.startsWith('http') ? 'noopener noreferrer' : undefined}
                     className="inline-flex items-center gap-2 font-body text-sm text-[#B87333] hover:text-[#1a1a1a] transition-colors"
+                    data-magnetic
                   >
                     {info.action.label}
                     <ArrowRight className="w-4 h-4" />
@@ -240,7 +286,7 @@ export default function ContactPage() {
               </h2>
 
               <div className="space-y-0">
-                {hours.map((item, index) => (
+                {hours.map((item) => (
                   <div 
                     key={item.day}
                     className="flex justify-between items-center py-5 border-b border-white/10"
@@ -275,6 +321,7 @@ export default function ContactPage() {
                     rel="noopener noreferrer"
                     className="btn-copper"
                     data-magnetic
+                    data-cursor-text="Map"
                   >
                     <MapPin className="w-5 h-5" />
                     View on Google Maps
@@ -377,6 +424,7 @@ export default function ContactPage() {
                     disabled={isSubmitting}
                     className="w-full btn-copper justify-center"
                     data-magnetic
+                    data-cursor-text="Send"
                   >
                     {isSubmitting ? (
                       <>
@@ -412,6 +460,7 @@ export default function ContactPage() {
             rel="noopener noreferrer"
             className="inline-flex items-center gap-3 px-10 py-5 bg-[#1a1a1a] text-white font-body text-sm tracking-wider uppercase hover:bg-white hover:text-[#1a1a1a] transition-all duration-300"
             data-magnetic
+            data-cursor-text="Book"
             style={{ borderRadius: 0 }}
           >
             Book Appointment
