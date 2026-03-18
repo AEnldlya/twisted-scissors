@@ -1,277 +1,513 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { MapPin, Phone, Clock, ArrowRight, Award, Calendar } from 'lucide-react';
-import Navigation from '@/components/Navigation';
 import Image from 'next/image';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MapPin, Phone, Clock, ArrowRight, Award, Star, Calendar } from 'lucide-react';
+import TextReveal from '@/components/TextReveal';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function AboutPage() {
-  return (
-    <main className="min-h-screen bg-[#F5F5F0]">
-      <Navigation />
+  const heroRef = useRef<HTMLDivElement>(null);
+  const storyRef = useRef<HTMLDivElement>(null);
+  const valuesRef = useRef<HTMLDivElement>(null);
+  const locationRef = useRef<HTMLDivElement>(null);
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 bg-[#1A1A2E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <span className="text-[#C9A227] font-mono text-sm tracking-[0.3em] uppercase mb-4 block">
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero animation
+      if (heroRef.current) {
+        const heroContent = heroRef.current.querySelector('.hero-content');
+        if (heroContent) {
+          gsap.fromTo(heroContent,
+            { y: 60, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 1.2,
+              ease: 'power3.out',
+              delay: 0.3,
+            }
+          );
+        }
+      }
+
+      // Story section - shear reveal
+      if (storyRef.current) {
+        const elements = storyRef.current.querySelectorAll('.story-reveal');
+        elements.forEach((el, index) => {
+          gsap.fromTo(el,
+            { y: 50, skewY: 2, opacity: 0 },
+            {
+              y: 0,
+              skewY: 0,
+              opacity: 1,
+              duration: 1,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: el,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+              delay: index * 0.1,
+            }
+          );
+        });
+      }
+
+      // Values cards - clip reveal
+      if (valuesRef.current) {
+        const cards = valuesRef.current.querySelectorAll('.value-card');
+        cards.forEach((card, index) => {
+          gsap.fromTo(card,
+            { 
+              clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
+              opacity: 0 
+            },
+            {
+              clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+              opacity: 1,
+              duration: 1,
+              ease: 'power3.inOut',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+              delay: index * 0.15,
+            }
+          );
+        });
+      }
+
+      // Location section
+      if (locationRef.current) {
+        const elements = locationRef.current.querySelectorAll('.location-reveal');
+        elements.forEach((el, index) => {
+          gsap.fromTo(el,
+            { y: 40, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: el,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+              delay: index * 0.1,
+            }
+          );
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  const values = [
+    {
+      icon: Award,
+      title: 'Experience',
+      description: '20+ years of cutting hair means Brooke has seen it all and knows how to deliver results.'
+    },
+    {
+      icon: Star,
+      title: 'Quality',
+      description: 'No rushed cuts. Every appointment gets the time and attention it deserves.'
+    },
+    {
+      icon: Clock,
+      title: 'Respect',
+      description: 'Your time matters. Brooke runs on schedule and keeps appointments moving smoothly.'
+    },
+  ];
+
+  return (
+    <main className="min-h-screen bg-[#F8F6F3]">
+      {/* Hero Section */}
+      <section 
+        ref={heroRef}
+        className="relative min-h-[70vh] bg-[#1a1a1a] flex items-center overflow-hidden"
+      >
+        {/* Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#1a1a1a]/95 to-[#2a2a2a] z-10" />
+          <Image
+            src="/images/frontdoor.png"
+            alt="Twisted Scissors"
+            fill
+            className="object-cover opacity-30"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 py-32">
+          <div className="hero-content max-w-3xl">
+            <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
               Our Story
             </span>
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-              ABOUT US
-            </h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Your hair transformation awaits in the heart of Hanover.
-            </p>
-          </motion.div>
-        </div>
-      </section>
-
-      {/* Story Section */}
-      <section className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-            >
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-[#1A1A2E] mb-8">
-                WELCOME TO YOUR<br />
-                <span className="text-[#C9A227]">HAIR HAVEN</span>
-              </h2>
-              <div className="space-y-6 text-lg text-[#4A4A4A] leading-relaxed">
-                <p>
-                  Located in the heart of Hanover, just minutes away from Dartmouth College, 
-                  Twisted Scissors is your destination for premium hair care and grooming.
-                </p>
-                <p>
-                  With over 18 years of dedicated service to Upper Valley clients, our brand-new 
-                  spot at 53 S. Main Street is ready to elevate your style. We combine traditional 
-                  barbering techniques with modern trends to give you the perfect look.
-                </p>
-                <p>
-                  Backed by 20 years of combined barber experience, our team offers expert cuts 
-                  and vibrant colors. We listen to you, respect your time, and deliver results 
-                  that keep you coming back.
-                </p>
-              </div>
-            </motion.div>
             
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8 }}
-              className="relative"
-            >
-              <div className="aspect-[4/3] relative rounded-lg overflow-hidden shadow-2xl">
-                <Image
-                  src="/images/insideview.png"
-                  alt="Inside Twisted Scissors"
-                  fill
-                  className="object-cover"
-                />
-              </div>
-              <div className="absolute -bottom-6 -right-6 bg-[#C9A227] text-[#1A1A2E] px-8 py-6">
-                <div className="font-display text-4xl font-bold">18+</div>
-                <div className="text-sm font-medium">Years Experience</div>
-              </div>
-            </motion.div>
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-[0.9] mb-8">
+              <TextReveal>
+                Two Decades
+              </TextReveal>
+              <br />
+              <span className="text-[#B87333]">
+                <TextReveal delay={0.2}>
+                  of Craft
+                </TextReveal>
+              </span>
+            </h1>
+            
+            <p className="font-body text-xl text-white/60 max-w-xl leading-relaxed">
+              From learning the trade to opening her own shop in Hanover, 
+              Brooke&apos;s journey has always been about one thing: quality work.
+            </p>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <section className="py-20 bg-[#1A1A2E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {[
-              { number: '18+', label: 'Years in Hanover' },
-              { number: '20+', label: 'Years Combined Experience' },
-              { number: '5.0', label: 'Google Rating' },
-              { number: '1000+', label: 'Happy Clients' },
-            ].map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="text-center"
+      {/* Story Section - Editorial Layout */}
+      <section 
+        ref={storyRef}
+        className="py-24 lg:py-32 bg-[#F8F6F3]"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-12 gap-12 lg:gap-20 items-center">
+            {/* Image - Offset */}
+            <div className="lg:col-span-5 lg:col-start-1">
+              <div className="relative story-reveal">
+                <div className="aspect-[3/4] relative overflow-hidden">
+                  <Image
+                    src="/images/insideview.png"
+                    alt="Twisted Scissors Interior"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+                {/* Floating Quote */}
+                <div className="absolute -bottom-8 -right-8 lg:-right-16 bg-[#1a1a1a] p-8 max-w-xs">
+                  <p className="font-display text-xl text-white italic leading-relaxed">
+                    &ldquo;I believe every cut should be a collaboration between stylist and client.&rdquo;
+                  </p>
+                  <p className="font-body text-[#B87333] mt-4 text-sm tracking-wider uppercase">
+                    — Brooke
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Content */}
+            <div className="lg:col-span-6 lg:col-start-7 mt-16 lg:mt-0">
+              <div className="story-reveal">
+                <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
+                  The Journey
+                </span>
+              </div>
+              
+              <h2 className="font-display text-4xl md:text-5xl text-[#1a1a1a] leading-[1.1] mb-8 story-reveal">
+                From Apprentice<br />
+                to <span className="text-[#B87333]">Shop Owner</span>
+              </h2>
+              
+              <div className="space-y-6 font-body text-lg text-[#1a1a1a]/70 leading-relaxed">
+                <p className="story-reveal">
+                  Brooke started cutting hair over 20 years ago, learning the fundamentals 
+                  from seasoned barbers who emphasized precision and attention to detail. 
+                  Those early lessons stuck with her.
+                </p>
+                <p className="story-reveal">
+                  For 18 years, she built a loyal following in the Upper Valley, working 
+                  in various shops and refining her craft. Clients appreciated her consistency, 
+                  her ability to listen, and her respect for their time.
+                </p>
+                <p className="story-reveal">
+                  In 2024, Brooke opened Twisted Scissors at 53 S. Main Street in Hanover. 
+                  The shop represents everything she believes in: quality over quantity, 
+                  personal attention over rushed appointments, and building relationships 
+                  that last years, not just visits.
+                </p>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-8 mt-12 pt-8 border-t border-[#1a1a1a]/10">
+                <div className="story-reveal">
+                  <div className="font-display text-4xl text-[#B87333] mb-1">20+</div>
+                  <div className="font-body text-[#1a1a1a]/50 text-sm">Years Cutting</div>
+                </div>
+                <div className="story-reveal">
+                  <div className="font-display text-4xl text-[#B87333] mb-1">18+</div>
+                  <div className="font-body text-[#1a1a1a]/50 text-sm">Years in Hanover</div>
+                </div>
+                <div className="story-reveal">
+                  <div className="font-display text-4xl text-[#B87333] mb-1">5.0</div>
+                  <div className="font-body text-[#1a1a1a]/50 text-sm">Google Rating</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Values Section */}
+      <section 
+        ref={valuesRef}
+        className="py-24 lg:py-32 bg-[#1a1a1a]"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          {/* Section Header */}
+          <div className="text-center mb-16">
+            <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-4">
+              What We Stand For
+            </span>
+            <h2 className="font-display text-4xl md:text-5xl text-white">
+              <TextReveal>Our Values</TextReveal>
+            </h2>
+          </div>
+
+          {/* Values Grid */}
+          <div className="grid md:grid-cols-3 gap-8">
+            {values.map((value, index) => (
+              <div 
+                key={value.title}
+                className="value-card bg-[#2a2a2a] p-8 lg:p-10 border-l-4 border-[#B87333]"
               >
-                <div className="font-display text-5xl font-bold text-[#C9A227] mb-2">{stat.number}</div>
-                <div className="text-white/60">{stat.label}</div>
-              </motion.div>
+                <div className="w-14 h-14 bg-[#B87333]/10 flex items-center justify-center mb-6">
+                  <value.icon className="w-7 h-7 text-[#B87333]" />
+                </div>
+                <h3 className="font-display text-2xl text-white mb-4">{value.title}</h3>
+                <p className="font-body text-white/60 leading-relaxed">{value.description}</p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Meet Brooke */}
-      <section className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
-            <motion.div
-              initial={{ opacity: 0, x: -40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-2 lg:order-1"
-            >
-              <div className="bg-[#1A1A2E] p-12 relative">
-                <div className="absolute -top-4 -left-4 w-full h-full border-2 border-[#C9A227]" />
-                <div className="relative">
-                  <Award className="text-[#C9A227] mb-6" size={48} />
-                  <h3 className="font-display text-3xl font-bold text-white mb-4">Meet Brooke</h3>
-                  <p className="text-white/70 text-lg leading-relaxed mb-6">
-                    Our lead stylist with years of experience in precision cuts, fades, and color. 
-                    Brooke listens to every client and delivers results that exceed expectations.
-                  </p>
-                  <div className="flex items-center gap-2 text-[#C9A227]">
-                    <span className="font-display text-2xl font-bold">5.0</span>
-                    <span className="text-white/60">Rating from 20+ reviews</span>
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, x: 40 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="order-1 lg:order-2"
-            >
-              <span className="text-[#C9A227] font-mono text-sm tracking-[0.3em] uppercase mb-4 block">
-                Our Team
+      {/* The Shop Section */}
+      <section className="py-24 lg:py-32 bg-[#F8F6F3]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            {/* Content */}
+            <div>
+              <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
+                The Space
               </span>
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-[#1A1A2E] mb-8">
-                EXPERT<br />STYLISTS
+              <h2 className="font-display text-4xl md:text-5xl text-[#1a1a1a] leading-[1.1] mb-8">
+                A Shop Built<br />
+                <span className="text-[#B87333]">for Quality</span>
               </h2>
-              <p className="text-lg text-[#4A4A4A] leading-relaxed mb-8">
-                At Twisted Scissors, you are in good hands. Our team combines technical skill 
-                with a passion for helping clients look and feel their best. Every cut is a 
-                collaboration between stylist and client.
-              </p>
-              <div className="space-y-4">
+              
+              <div className="space-y-6 font-body text-lg text-[#1a1a1a]/70 leading-relaxed">
+                <p>
+                  Twisted Scissors sits at 53 S. Main Street in the heart of Hanover, 
+                  just steps from Dartmouth College. The space is clean, comfortable, 
+                  and designed for one thing: great haircuts.
+                </p>
+                <p>
+                  Brooke has created an environment where clients can relax, chat if 
+                  they want to, or enjoy quiet focus. It&apos;s a judgment-free zone where 
+                  everyone is welcome—men, women, students, professionals, and families.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-2 gap-6 mt-10">
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#C9A227] rounded-full" />
-                  <span className="text-[#4A4A4A]">Personalized consultations</span>
+                  <div className="w-2 h-2 bg-[#B87333]" />
+                  <span className="font-body text-[#1a1a1a]/80">Clean & Modern</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#C9A227] rounded-full" />
-                  <span className="text-[#4A4A4A]">Attention to detail</span>
+                  <div className="w-2 h-2 bg-[#B87333]" />
+                  <span className="font-body text-[#1a1a1a]/80">Welcoming Atmosphere</span>
                 </div>
                 <div className="flex items-center gap-3">
-                  <div className="w-2 h-2 bg-[#C9A227] rounded-full" />
-                  <span className="text-[#4A4A4A]">Respect for your time</span>
+                  <div className="w-2 h-2 bg-[#B87333]" />
+                  <span className="font-body text-[#1a1a1a]/80">Downtown Location</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-2 h-2 bg-[#B87333]" />
+                  <span className="font-body text-[#1a1a1a]/80">Easy Parking</span>
                 </div>
               </div>
-            </motion.div>
+            </div>
+
+            {/* Image Grid */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="aspect-[3/4] relative overflow-hidden">
+                <Image
+                  src="/images/frontdoor.png"
+                  alt="Twisted Scissors Exterior"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+              <div className="aspect-[3/4] relative overflow-hidden mt-8">
+                <Image
+                  src="/images/insideview.png"
+                  alt="Twisted Scissors Interior"
+                  fill
+                  className="object-cover hover:scale-105 transition-transform duration-700"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Location */}
-      <section className="py-24 lg:py-32 bg-[#1A1A2E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      {/* Location & Hours Section */}
+      <section 
+        ref={locationRef}
+        className="py-24 lg:py-32 bg-[#1a1a1a]"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid lg:grid-cols-2 gap-16">
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              <span className="text-[#C9A227] font-mono text-sm tracking-[0.3em] uppercase mb-4 block">
-                Visit Us
-              </span>
-              <h2 className="font-display text-4xl md:text-5xl font-bold text-white mb-8">
-                FIND US IN<br />HANOVER
+            {/* Location */}
+            <div>
+              <div className="location-reveal">
+                <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
+                  Visit Us
+                </span>
+              </div>
+              <h2 className="font-display text-4xl md:text-5xl text-white mb-10 location-reveal">
+                Find Us in<br />
+                <span className="text-[#B87333]">Hanover</span>
               </h2>
-              <div className="space-y-6">
-                <div className="flex items-start gap-4">
-                  <MapPin className="text-[#C9A227] mt-1" size={24} />
+
+              <div className="space-y-8">
+                <div className="flex items-start gap-4 location-reveal">
+                  <div className="w-12 h-12 bg-[#B87333]/10 flex items-center justify-center flex-shrink-0">
+                    <MapPin className="w-6 h-6 text-[#B87333]" />
+                  </div>
                   <div>
-                    <div className="font-display text-xl font-bold text-white mb-1">Address</div>
-                    <div className="text-white/70">53 S. Main Street</div>
-                    <div className="text-white/70">Hanover, NH 03755</div>
-                    <div className="text-white/50 text-sm mt-1">In the Nugget Building</div>
+                    <h3 className="font-display text-xl text-white mb-2">Address</h3>
+                    <p className="font-body text-white/60">53 S. Main Street</p>
+                    <p className="font-body text-white/60">Hanover, NH 03755</p>
+                    <p className="font-body text-white/40 text-sm mt-1">In the Nugget Building</p>
                   </div>
                 </div>
-                <div className="flex items-center gap-4">
-                  <Phone className="text-[#C9A227]" size={24} />
+
+                <div className="flex items-start gap-4 location-reveal">
+                  <div className="w-12 h-12 bg-[#B87333]/10 flex items-center justify-center flex-shrink-0">
+                    <Phone className="w-6 h-6 text-[#B87333]" />
+                  </div>
                   <div>
-                    <div className="font-display text-xl font-bold text-white mb-1">Phone</div>
-                    <a href="tel:6032779842" className="text-white/70 hover:text-[#C9A227] transition-colors">
+                    <h3 className="font-display text-xl text-white mb-2">Phone</h3>
+                    <a href="tel:6032779842" className="font-body text-white/60 hover:text-[#B87333] transition-colors">
                       (603) 277-9842
                     </a>
                   </div>
                 </div>
-                <div className="flex items-start gap-4">
-                  <Clock className="text-[#C9A227] mt-1" size={24} />
+
+                <div className="flex items-start gap-4 location-reveal">
+                  <div className="w-12 h-12 bg-[#B87333]/10 flex items-center justify-center flex-shrink-0">
+                    <Calendar className="w-6 h-6 text-[#B87333]" />
+                  </div>
                   <div>
-                    <div className="font-display text-xl font-bold text-white mb-1">Hours</div>
-                    <div className="text-white/70">Wednesday - Friday: 9AM - 5PM</div>
-                    <div className="text-white/70">Saturday: 9AM - 12:30PM</div>
-                    <div className="text-white/50">Sunday - Tuesday: Closed</div>
+                    <h3 className="font-display text-xl text-white mb-2">Online Booking</h3>
+                    <a 
+                      href="https://bookoapp.com/book/twisted-scissors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-body text-[#B87333] hover:underline"
+                    >
+                      bookoapp.com/book/twisted-scissors
+                    </a>
                   </div>
                 </div>
               </div>
-            </motion.div>
-            
-            <motion.div
-              initial={{ opacity: 0, y: 40 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              className="relative"
-            >
-              <div className="aspect-[4/3] relative rounded-lg overflow-hidden">
-                <Image
-                  src="/images/frontdoor.png"
-                  alt="Twisted Scissors Location"
-                  fill
-                  className="object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-[#1A1A2E]/60 to-transparent" />
+            </div>
+
+            {/* Hours */}
+            <div>
+              <div className="location-reveal">
+                <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
+              Schedule
+                </span>
               </div>
-            </motion.div>
+              <h2 className="font-display text-4xl md:text-5xl text-white mb-10 location-reveal">
+                Opening<br />
+                <span className="text-[#B87333]">Hours</span>
+              </h2>
+
+              <div className="space-y-4">
+                {[
+                  { day: 'Monday', hours: 'Closed' },
+                  { day: 'Tuesday', hours: 'Closed' },
+                  { day: 'Wednesday', hours: '9AM - 5PM' },
+                  { day: 'Thursday', hours: '9AM - 5PM' },
+                  { day: 'Friday', hours: '9AM - 5PM' },
+                  { day: 'Saturday', hours: '9AM - 12:30PM' },
+                  { day: 'Sunday', hours: 'Closed' }
+                ].map((item, index) => (
+                  <div 
+                    key={item.day}
+                    className="flex justify-between items-center py-4 border-b border-white/10 location-reveal"
+                  >
+                    <span className="font-body text-white">{item.day}</span>
+                    <span className={`font-body ${item.hours === 'Closed' ? 'text-white/40' : 'text-[#B87333]'}`}>
+                      {item.hours}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <p className="font-body text-white/40 text-sm mt-6 location-reveal">
+                Walk-ins welcome when schedule permits. Appointments recommended.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#C9A227]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display text-4xl font-bold text-[#1A1A2E] mb-6">Ready for Your Transformation?</h2>
-          <p className="text-xl text-[#1A1A2E]/80 mb-8">Book your appointment today.</p>
-          <a
-            href="https://bookoapp.com/book/twisted-scissors"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-[#1A1A2E] text-[#C9A227] font-display text-xl font-bold hover:bg-[#2A2A4E] transition-all"
-          >
-            Book Now <ArrowRight size={24} />
-          </a>
+      {/* CTA Section */}
+      <section className="py-24 lg:py-32 bg-[#B87333]">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="font-display text-4xl md:text-5xl text-white mb-6">
+            Ready to Experience the Difference?
+          </h2>
+          <p className="font-body text-xl text-white/80 mb-10">
+            Book your appointment with Brooke today.
+          </p>
+          <div className="flex flex-wrap justify-center gap-4">
+            <a 
+              href="https://bookoapp.com/book/twisted-scissors"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-3 px-10 py-5 bg-[#1a1a1a] text-white font-body text-sm tracking-wider uppercase hover:bg-white hover:text-[#1a1a1a] transition-all duration-300"
+              data-magnetic
+              style={{ borderRadius: 0 }}
+            >
+              Book Online
+              <ArrowRight size={18} />
+            </a>
+            <a 
+              href="tel:6032779842"
+              className="inline-flex items-center gap-3 px-10 py-5 border-2 border-white text-white font-body text-sm tracking-wider uppercase hover:bg-white hover:text-[#B87333] transition-all duration-300"
+              data-magnetic
+              style={{ borderRadius: 0 }}
+            >
+              <Phone size={18} />
+              Call Now
+            </a>
+          </div>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1A1A2E] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="bg-[#1a1a1a] text-white py-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <span className="font-display text-xl font-bold">TWISTED SCISSORS</span>
-              <p className="text-white/60 text-sm mt-2">Premium barbershop in Hanover, NH.</p>
+              <span className="font-display text-xl">TWISTED <span className="text-[#B87333]">SCISSORS</span></span>
+              <p className="font-body text-white/50 text-sm mt-2">Premium barbershop in Hanover, NH.</p>
             </div>
             <div>
               <h4 className="font-display font-bold text-lg mb-4">Hours</h4>
-              <ul className="space-y-2 text-white/60 text-sm">
+              <ul className="space-y-2 font-body text-white/60 text-sm">
                 <li>Wed-Fri: 9am - 5pm</li>
                 <li>Saturday: 9am - 12:30pm</li>
                 <li>Sun-Tue: Closed</li>
@@ -279,16 +515,16 @@ export default function AboutPage() {
             </div>
             <div>
               <h4 className="font-display font-bold text-lg mb-4">Contact</h4>
-              <ul className="space-y-2 text-white/60 text-sm">
+              <ul className="space-y-2 font-body text-white/60 text-sm">
                 <li>(603) 277-9842</li>
                 <li>53 S. Main St, Hanover, NH</li>
               </ul>
             </div>
             <div>
-              <Link href="/" className="text-[#C9A227] hover:underline">← Back to Home</Link>
+              <Link href="/" className="text-[#B87333] hover:underline font-body">← Back to Home</Link>
             </div>
           </div>
-          <div className="border-t border-white/10 mt-12 pt-8 text-center text-white/40 text-sm">
+          <div className="border-t border-white/10 mt-12 pt-8 text-center font-body text-white/40 text-sm">
             &copy; {new Date().getFullYear()} Twisted Scissors. All rights reserved.
           </div>
         </div>

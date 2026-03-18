@@ -3,12 +3,39 @@
 @tailwind utilities;
 
 :root {
-  --navy: #1A1A2E;
-  --gold: #C9A227;
-  --crimson: #E94560;
-  --cream: #F5F5F0;
+  /* Barbershop Color System - Copper/Bronze Edition */
+  --charcoal: #1a1a1a;
+  --charcoal-light: #2a2a2a;
+  --charcoal-dark: #0f0f0f;
+  --copper: #B87333;
+  --copper-light: #D4915A;
+  --copper-dark: #8B5A2B;
+  --cream: #F8F6F3;
+  --cream-dark: #EDE9E4;
   --white: #FFFFFF;
+  --white-soft: rgba(255, 255, 255, 0.9);
+  
+  /* Font families */
+  --font-general: 'General Sans', system-ui, sans-serif;
+  --font-zodiak: 'Zodiak', Georgia, serif;
 }
+
+/* Fontshare Font Imports */
+@font-face {
+  font-family: 'General Sans';
+  src: url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&display=swap');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Zodiak';
+  src: url('https://api.fontshare.com/v2/css?f[]=zodiak@400,500,600,700&display=swap');
+  font-weight: 400 700;
+  font-display: swap;
+}
+
+@import url('https://api.fontshare.com/v2/css?f[]=general-sans@400,500,600,700&f[]=zodiak@400,500,600,700&display=swap');
 
 @layer base {
   html {
@@ -16,29 +43,352 @@
   }
   
   body {
-    @apply bg-[#F5F5F0] text-[#1A1A2E] antialiased;
-    font-family: var(--font-inter), system-ui, sans-serif;
+    @apply bg-[#F8F6F3] text-[#1a1a1a] antialiased;
+    font-family: 'General Sans', system-ui, sans-serif;
+    cursor: none;
+  }
+  
+  /* Hide default cursor on interactive elements */
+  a, button, [role="button"], input, textarea, select {
+    cursor: none;
   }
   
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-oswald), system-ui, sans-serif;
+    font-family: 'Zodiak', Georgia, serif;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+  }
+  
+  /* Selection color */
+  ::selection {
+    background: #B87333;
+    color: #FFFFFF;
   }
 }
 
 @layer components {
+  /* Typography */
   .font-display {
-    font-family: var(--font-oswald), system-ui, sans-serif;
+    font-family: 'Zodiak', Georgia, serif;
   }
   
-  .font-accent {
-    font-family: var(--font-playfair), serif;
+  .font-body {
+    font-family: 'General Sans', system-ui, sans-serif;
   }
   
+  /* Buttons - Sharp corners for barbershop precision */
   .btn-primary {
-    @apply inline-flex items-center gap-2 px-8 py-4 bg-black text-white rounded-none font-semibold hover:bg-grey-800 transition-all duration-300;
+    @apply inline-flex items-center gap-3 px-8 py-4 bg-[#1a1a1a] text-white font-semibold text-sm tracking-wider uppercase;
+    border-radius: 0;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   }
   
-  .btn-gold {
-    @apply inline-flex items-center gap-2 px-8 py-4 bg-gold text-black rounded-none font-semibold hover:bg-gold-light transition-all duration-300;
+  .btn-primary:hover {
+    @apply bg-[#B87333];
+    transform: translateY(-2px);
+  }
+  
+  .btn-copper {
+    @apply inline-flex items-center gap-3 px-8 py-4 bg-[#B87333] text-white font-semibold text-sm tracking-wider uppercase;
+    border-radius: 0;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .btn-copper:hover {
+    @apply bg-[#1a1a1a];
+    transform: translateY(-2px);
+  }
+  
+  .btn-outline {
+    @apply inline-flex items-center gap-3 px-8 py-4 border border-[#1a1a1a] text-[#1a1a1a] font-semibold text-sm tracking-wider uppercase;
+    border-radius: 0;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .btn-outline:hover {
+    @apply bg-[#1a1a1a] text-white;
+  }
+  
+  .btn-outline-white {
+    @apply inline-flex items-center gap-3 px-8 py-4 border border-white/30 text-white font-semibold text-sm tracking-wider uppercase;
+    border-radius: 0;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .btn-outline-white:hover {
+    @apply bg-white/10 border-white;
+  }
+  
+  /* Cards - Sharp corners */
+  .card-sharp {
+    border-radius: 0;
+    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  /* Text reveal animation container */
+  .text-reveal {
+    overflow: hidden;
+  }
+  
+  .text-reveal-inner {
+    display: inline-block;
+    transform: translateY(100%) skewY(5deg);
+    opacity: 0;
+  }
+  
+  .text-reveal-inner.revealed {
+    transform: translateY(0) skewY(0);
+    opacity: 1;
+    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease;
+  }
+  
+  /* Shear/Snip clip-path animations */
+  .clip-snip-right {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  
+  .clip-snip-right.revealed {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transition: clip-path 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .clip-snip-left {
+    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+  }
+  
+  .clip-snip-left.revealed {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transition: clip-path 1.2s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .clip-diagonal {
+    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
+  }
+  
+  .clip-diagonal.revealed {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    transition: clip-path 1.4s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  /* Razor line divider */
+  .razor-line {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #B87333, transparent);
+    transform: scaleX(0);
+    transform-origin: center;
+  }
+  
+  .razor-line.revealed {
+    transform: scaleX(1);
+    transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  /* Barber pole stripe background */
+  .barber-stripes {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(184, 115, 51, 0.03) 10px,
+      rgba(184, 115, 51, 0.03) 20px
+    );
+  }
+  
+  /* Mirror reflection effect */
+  .mirror-hover {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .mirror-hover::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 50%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.2),
+      transparent
+    );
+    transform: skewX(-25deg);
+    transition: left 0.8s ease;
+  }
+  
+  .mirror-hover:hover::after {
+    left: 150%;
+  }
+  
+  /* 3D tilt card */
+  .tilt-card {
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+  }
+  
+  .tilt-card-content {
+    transform: translateZ(20px);
+  }
+  
+  /* Custom scrollbar */
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: #F8F6F3;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: #B87333;
+    border-radius: 0;
+  }
+  
+  /* Progress bar */
+  .scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 2px;
+    background: #B87333;
+    z-index: 9999;
+    transform-origin: left;
+  }
+  
+  /* Steam/mist particle container */
+  .steam-container {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+  
+  .steam-particle {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+    border-radius: 50%;
+    animation: float-up 8s infinite ease-in-out;
+  }
+  
+  @keyframes float-up {
+    0%, 100% {
+      transform: translateY(100%) scale(0.5);
+      opacity: 0;
+    }
+    50% {
+      opacity: 0.3;
+    }
+    100% {
+      transform: translateY(-100%) scale(1.5);
+      opacity: 0;
+    }
+  }
+  
+  /* Character animation */
+  .char {
+    display: inline-block;
+    transform: translateY(100%) skewX(-10deg);
+    opacity: 0;
+  }
+  
+  .char.revealed {
+    transform: translateY(0) skewX(0);
+    opacity: 1;
+    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
+  }
+  
+  /* Image hover with shear */
+  .img-shear-hover {
+    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+  }
+  
+  .img-shear-hover:hover {
+    transform: scale(1.05) skewX(-2deg);
+    filter: brightness(1.1);
+  }
+  
+  /* Section divider with snip effect */
+  .section-divider {
+    position: relative;
+    height: 60px;
+    overflow: hidden;
+  }
+  
+  .section-divider::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: #B87333;
+    transform: translateY(-50%);
+  }
+  
+  .section-divider::after {
+    content: '✂';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #B87333;
+    font-size: 24px;
+    background: #F8F6F3;
+    padding: 0 20px;
+  }
+}
+
+@layer utilities {
+  /* Perspective for 3D effects */
+  .perspective-1000 {
+    perspective: 1000px;
+  }
+  
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+  
+  /* Copper gradient text */
+  .text-copper-gradient {
+    background: linear-gradient(135deg, #B87333 0%, #D4915A 50%, #B87333 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  
+  /* Editorial layout helpers */
+  .editorial-grid {
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    gap: 2rem;
+  }
+  
+  .editorial-span-5 {
+    grid-column: span 5;
+  }
+  
+  .editorial-span-7 {
+    grid-column: span 7;
+  }
+  
+  .editorial-offset-1 {
+    grid-column-start: 2;
+  }
+  
+  /* Asymmetric spacing */
+  .asymmetric-pad {
+    padding: clamp(4rem, 10vw, 10rem) 0;
+  }
+  
+  /* Sharp shadow */
+  .shadow-sharp {
+    box-shadow: 8px 8px 0 rgba(26, 26, 26, 0.1);
+  }
+  
+  .shadow-sharp-copper {
+    box-shadow: 8px 8px 0 rgba(184, 115, 51, 0.2);
   }
 }

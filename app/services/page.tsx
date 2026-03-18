@@ -1,147 +1,375 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Clock, ArrowRight, Scissors } from 'lucide-react';
-import Navigation from '@/components/Navigation';
+import Image from 'next/image';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Clock, ArrowRight, Scissors, Sparkles } from 'lucide-react';
+import TextReveal from '@/components/TextReveal';
+import TiltCard from '@/components/TiltCard';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export default function ServicesPage() {
+  const heroRef = useRef<HTMLDivElement>(null);
+  const servicesRef = useRef<HTMLDivElement>(null);
+  const addOnsRef = useRef<HTMLDivElement>(null);
+
   const services = [
     { 
       name: 'Classic Haircut', 
       price: '$35', 
       duration: '30 min', 
-      description: 'A precision cut tailored to your personal style. Includes consultation, wash, cut, and styling.',
-      features: ['Consultation', 'Shampoo', 'Precision Cut', 'Styling']
+      description: 'A precision cut tailored to your personal style. Includes consultation, precision cutting, and styling to finish.',
+      features: ['Personal consultation', 'Precision scissor cut', 'Styling finish', 'Neck cleanup'],
+      popular: false
     },
     { 
       name: 'Fade / Taper', 
       price: '$40', 
       duration: '35 min', 
       description: 'Modern fade or taper cut with clean lines and smooth transitions. Perfect for a fresh, contemporary look.',
-      features: ['Skin Fade', 'Low/Mid/High Fade', 'Taper', 'Line Up']
+      features: ['Skin fade options', 'Low/Mid/High fade', 'Crisp line up', 'Blended transitions'],
+      popular: true
     },
     { 
       name: 'Beard Trim', 
       price: '$20', 
       duration: '15 min', 
       description: 'Professional beard shaping and trimming to complement your haircut and facial structure.',
-      features: ['Shape & Style', 'Neck Cleanup', 'Hot Towel', 'Beard Oil']
-    },
-    { 
-      name: 'Hot Towel Shave', 
-      price: '$35', 
-      duration: '30 min', 
-      description: 'Classic straight razor shave with hot towel treatment for the ultimate grooming experience.',
-      features: ['Hot Towel Prep', 'Straight Razor', 'Aftershave', 'Moisturizer']
+      features: ['Shape & style', 'Neck cleanup', 'Hot towel treatment', 'Beard oil finish'],
+      popular: false
     },
     { 
       name: 'Haircut & Beard', 
       price: '$50', 
       duration: '45 min', 
-      description: 'Complete grooming package. Get a fresh cut and perfectly styled beard in one visit.',
-      features: ['Full Haircut', 'Beard Trim', 'Hot Towel', 'Styling']
-    },
-    { 
-      name: 'Kids Cut', 
-      price: '$25', 
-      duration: '20 min', 
-      description: 'Gentle and patient service for young clients. Ages 12 and under.',
-      features: ['Patient Service', 'Kid-Friendly', 'Wash & Cut', 'Fun Experience']
+      description: 'Complete grooming package. Get a fresh cut and perfectly styled beard in one visit. Best value.',
+      features: ['Full haircut service', 'Beard trim & shape', 'Hot towel treatment', 'Complete styling'],
+      popular: true
     },
   ];
 
-  return (
-    <main className="min-h-screen bg-[#F5F5F0]">
-      <Navigation />
+  const addOns = [
+    { name: 'Hot Towel Treatment', price: '$10', description: 'Relaxing hot towel prep and finish' },
+    { name: 'Beard Conditioning', price: '$8', description: 'Deep conditioning treatment for your beard' },
+    { name: 'Neck Shave', price: '$5', description: 'Clean razor finish on the neck' },
+  ];
 
-      {/* Hero */}
-      <section className="pt-32 pb-20 bg-[#1A1A2E]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-center"
-          >
-            <span className="text-[#C9A227] font-mono text-sm tracking-[0.3em] uppercase mb-4 block">
-              What We Offer
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Hero parallax
+      if (heroRef.current) {
+        const heroContent = heroRef.current.querySelector('.hero-content');
+        if (heroContent) {
+          gsap.fromTo(heroContent,
+            { y: 60, opacity: 0 },
+            {
+              y: 0,
+              opacity: 1,
+              duration: 1.2,
+              ease: 'power3.out',
+              delay: 0.3,
+            }
+          );
+        }
+      }
+
+      // Services cards - diagonal clip reveal
+      if (servicesRef.current) {
+        const cards = servicesRef.current.querySelectorAll('.service-card');
+        cards.forEach((card, index) => {
+          gsap.fromTo(card,
+            { 
+              clipPath: 'polygon(0 0, 0 0, 0 100%, 0 100%)',
+              opacity: 0 
+            },
+            {
+              clipPath: 'polygon(0 0, 100% 0, 100% 100%, 0 100%)',
+              opacity: 1,
+              duration: 1,
+              ease: 'power3.inOut',
+              scrollTrigger: {
+                trigger: card,
+                start: 'top 85%',
+                toggleActions: 'play none none reverse',
+              },
+              delay: index * 0.15,
+            }
+          );
+        });
+      }
+
+      // Add-ons reveal
+      if (addOnsRef.current) {
+        const items = addOnsRef.current.querySelectorAll('.addon-item');
+        items.forEach((item, index) => {
+          gsap.fromTo(item,
+            { x: -30, opacity: 0 },
+            {
+              x: 0,
+              opacity: 1,
+              duration: 0.8,
+              ease: 'power3.out',
+              scrollTrigger: {
+                trigger: item,
+                start: 'top 90%',
+                toggleActions: 'play none none reverse',
+              },
+              delay: index * 0.1,
+            }
+          );
+        });
+      }
+    });
+
+    return () => ctx.revert();
+  }, []);
+
+  return (
+    <main className="min-h-screen bg-[#F8F6F3]">
+      {/* Hero Section */}
+      <section 
+        ref={heroRef}
+        className="relative min-h-[70vh] bg-[#1a1a1a] flex items-center overflow-hidden"
+      >
+        {/* Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-br from-[#1a1a1a] via-[#1a1a1a]/95 to-[#2a2a2a] z-10" />
+          <Image
+            src="/images/insideview.png"
+            alt="Twisted Scissors"
+            fill
+            className="object-cover opacity-20"
+          />
+        </div>
+
+        {/* Content */}
+        <div className="relative z-20 max-w-7xl mx-auto px-6 lg:px-8 py-32">
+          <div className="hero-content">
+            <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
+              Our Menu
             </span>
-            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6">
-              OUR SERVICES
+            
+            <h1 className="font-display text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-white leading-[0.9] mb-8">
+              <TextReveal>
+                Services
+              </TextReveal>
+              <br />
+              <span className="text-[#B87333]">
+                <TextReveal delay={0.2}>
+                  & Pricing
+                </TextReveal>
+              </span>
             </h1>
-            <p className="text-xl text-white/70 max-w-2xl mx-auto">
-              Premium grooming services tailored to your style. Every cut is a masterpiece.
+            
+            <p className="font-body text-xl text-white/60 max-w-xl leading-relaxed">
+              Straightforward pricing for quality work. Every service begins with 
+              a consultation to ensure you get exactly what you want.
             </p>
-          </motion.div>
+          </div>
+        </div>
+
+        {/* Decorative Element */}
+        <div className="absolute bottom-0 right-0 w-1/3 h-full opacity-10">
+          <Scissors className="w-full h-full text-[#B87333]" strokeWidth={0.5} />
         </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-24 lg:py-32">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+      <section 
+        ref={servicesRef}
+        className="py-24 lg:py-32 bg-[#F8F6F3]"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-8">
             {services.map((service, index) => (
-              <motion.div
-                key={service.name}
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.6 }}
-                className="group bg-white p-8 border-t-4 border-[#C9A227] shadow-sm hover:shadow-xl transition-all duration-500"
-              >
-                <div className="flex items-center gap-3 mb-4">
-                  <Scissors className="text-[#C9A227]" size={24} />
-                  <h3 className="font-display text-2xl font-bold text-[#1A1A2E]">{service.name}</h3>
-                </div>
-                <p className="text-[#4A4A4A] mb-6">{service.description}</p>
-                <div className="flex flex-wrap gap-2 mb-6">
-                  {service.features.map((feature) => (
-                    <span key={feature} className="px-3 py-1 bg-[#C9A227]/10 text-[#1A1A2E] text-sm rounded-full">
-                      {feature}
-                    </span>
-                  ))}
-                </div>
-                <div className="flex items-center justify-between pt-6 border-t border-gray-100">
-                  <div className="flex items-center gap-2 text-[#4A4A4A]">
-                    <Clock size={16} className="text-[#C9A227]" />
-                    <span>{service.duration}</span>
+              <TiltCard key={service.name} className="service-card">
+                <div className={`relative bg-white p-8 lg:p-10 border-l-4 ${
+                  service.popular ? 'border-[#B87333]' : 'border-[#1a1a1a]'
+                } shadow-sharp hover:shadow-sharp-copper transition-all duration-500`}>
+                  
+                  {/* Popular Badge */}
+                  {service.popular && (
+                    <div className="absolute -top-3 right-8 bg-[#B87333] px-4 py-1">
+                      <span className="font-body text-xs text-white tracking-wider uppercase">Popular</span>
+                    </div>
+                  )}
+
+                  <div className="flex items-start justify-between mb-6">
+                    <div className="w-12 h-12 bg-[#1a1a1a] flex items-center justify-center">
+                      <Scissors className="w-6 h-6 text-[#B87333]" />
+                    </div>
+                    <div className="text-right">
+                      <span className="font-display text-4xl text-[#B87333]">{service.price}</span>
+                    </div>
                   </div>
-                  <div className="font-display text-3xl font-bold text-[#C9A227]">{service.price}</div>
+                  
+                  <h3 className="font-display text-2xl lg:text-3xl text-[#1a1a1a] mb-4">
+                    {service.name}
+                  </h3>
+                  
+                  <p className="font-body text-[#1a1a1a]/70 leading-relaxed mb-6">
+                    {service.description}
+                  </p>
+
+                  {/* Features */}
+                  <ul className="space-y-2 mb-8">
+                    {service.features.map((feature, i) => (
+                      <li key={i} className="flex items-center gap-3 font-body text-sm text-[#1a1a1a]/60">
+                        <span className="w-1 h-1 bg-[#B87333]" />
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
+                  
+                  <div className="flex items-center justify-between pt-6 border-t border-[#1a1a1a]/10">
+                    <div className="flex items-center gap-2 text-[#1a1a1a]/40">
+                      <Clock className="w-4 h-4" />
+                      <span className="font-body text-sm">{service.duration}</span>
+                    </div>
+                    <a 
+                      href="https://bookoapp.com/book/twisted-scissors"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="font-body text-sm text-[#B87333] hover:text-[#1a1a1a] transition-colors flex items-center gap-1"
+                    >
+                      Book Now <ArrowRight className="w-4 h-4" />
+                    </a>
+                  </div>
                 </div>
-              </motion.div>
+              </TiltCard>
             ))}
           </div>
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#C9A227]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="font-display text-4xl font-bold text-[#1A1A2E] mb-6">Ready to Book?</h2>
-          <p className="text-xl text-[#1A1A2E]/80 mb-8">Schedule your appointment online in minutes.</p>
-          <a
+      {/* Add-ons Section */}
+      <section 
+        ref={addOnsRef}
+        className="py-24 lg:py-32 bg-[#1a1a1a]"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="grid lg:grid-cols-2 gap-16 items-center">
+            {/* Left - Image */}
+            <div className="relative">
+              <div className="aspect-[4/3] relative overflow-hidden">
+                <Image
+                  src="/images/insideview.png"
+                  alt="Twisted Scissors Service"
+                  fill
+                  className="object-cover"
+                />
+              </div>
+              <div className="absolute -bottom-6 -right-6 bg-[#B87333] p-8">
+                <Sparkles className="w-8 h-8 text-white mb-2" />
+                <div className="font-body text-white/80 text-sm tracking-wider uppercase">
+                  Premium Add-ons
+                </div>
+              </div>
+            </div>
+
+            {/* Right - Add-ons List */}
+            <div>
+              <span className="inline-block text-[#B87333] font-body text-sm tracking-[0.3em] uppercase mb-6">
+                Enhance Your Visit
+              </span>
+              <h2 className="font-display text-4xl md:text-5xl text-white mb-12">
+                Add-On Services
+              </h2>
+
+              <div className="space-y-6">
+                {addOns.map((addon, index) => (
+                  <div 
+                    key={addon.name}
+                    className="addon-item flex items-center justify-between py-6 border-b border-white/10"
+                  >
+                    <div>
+                      <h3 className="font-display text-xl text-white mb-1">{addon.name}</h3>
+                      <p className="font-body text-white/50 text-sm">{addon.description}</p>
+                    </div>
+                    <span className="font-display text-2xl text-[#B87333]">{addon.price}</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="mt-12">
+                <a 
+                  href="https://bookoapp.com/book/twisted-scissors"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn-copper"
+                  data-magnetic
+                >
+                  Book with Add-ons
+                  <ArrowRight size={18} />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Policy Section */}
+      <section className="py-24 lg:py-32 bg-[#F8F6F3]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="max-w-3xl mx-auto text-center">
+            <h2 className="font-display text-3xl md:text-4xl text-[#1a1a1a] mb-8">
+              <TextReveal>Booking Policy</TextReveal>
+            </h2>
+            <div className="space-y-4 font-body text-[#1a1a1a]/70 leading-relaxed">
+              <p>
+                We respect your time and ask that you respect ours. If you need to cancel 
+                or reschedule, please give us at least 24 hours notice.
+              </p>
+              <p>
+                Walk-ins are welcome when the schedule permits, but appointments are 
+                always recommended to ensure you get your preferred time slot.
+              </p>
+              <p>
+                Running late? Give us a call at <a href="tel:6032779842" className="text-[#B87333] hover:underline">(603) 277-9842</a> and 
+                we&apos;ll do our best to accommodate you.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-24 lg:py-32 bg-[#B87333]">
+        <div className="max-w-4xl mx-auto px-6 lg:px-8 text-center">
+          <h2 className="font-display text-4xl md:text-5xl text-white mb-6">
+            Ready to Book?
+          </h2>
+          <p className="font-body text-xl text-white/80 mb-10">
+            Schedule your appointment online in just a few clicks.
+          </p>
+          <a 
             href="https://bookoapp.com/book/twisted-scissors"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-3 px-10 py-5 bg-[#1A1A2E] text-[#C9A227] font-display text-xl font-bold hover:bg-[#2A2A4E] transition-all"
+            className="inline-flex items-center gap-3 px-10 py-5 bg-[#1a1a1a] text-white font-body text-sm tracking-wider uppercase hover:bg-white hover:text-[#1a1a1a] transition-all duration-300"
+            data-magnetic
+            style={{ borderRadius: 0 }}
           >
-            Book Now <ArrowRight size={24} />
+            Schedule Now
+            <ArrowRight size={18} />
           </a>
         </div>
       </section>
 
       {/* Footer */}
-      <footer className="bg-[#1A1A2E] text-white py-16">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <footer className="bg-[#1a1a1a] text-white py-16">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <span className="font-display text-xl font-bold">TWISTED SCISSORS</span>
-              <p className="text-white/60 text-sm mt-2">Premium barbershop in Hanover, NH.</p>
+              <span className="font-display text-xl">TWISTED <span className="text-[#B87333]">SCISSORS</span></span>
+              <p className="font-body text-white/50 text-sm mt-2">Premium barbershop in Hanover, NH.</p>
             </div>
             <div>
               <h4 className="font-display font-bold text-lg mb-4">Hours</h4>
-              <ul className="space-y-2 text-white/60 text-sm">
+              <ul className="space-y-2 font-body text-white/60 text-sm">
                 <li>Wed-Fri: 9am - 5pm</li>
                 <li>Saturday: 9am - 12:30pm</li>
                 <li>Sun-Tue: Closed</li>
@@ -149,16 +377,16 @@ export default function ServicesPage() {
             </div>
             <div>
               <h4 className="font-display font-bold text-lg mb-4">Contact</h4>
-              <ul className="space-y-2 text-white/60 text-sm">
+              <ul className="space-y-2 font-body text-white/60 text-sm">
                 <li>(603) 277-9842</li>
                 <li>53 S. Main St, Hanover, NH</li>
               </ul>
             </div>
             <div>
-              <Link href="/" className="text-[#C9A227] hover:underline">← Back to Home</Link>
+              <Link href="/" className="text-[#B87333] hover:underline font-body">← Back to Home</Link>
             </div>
           </div>
-          <div className="border-t border-white/10 mt-12 pt-8 text-center text-white/40 text-sm">
+          <div className="border-t border-white/10 mt-12 pt-8 text-center font-body text-white/40 text-sm">
             &copy; {new Date().getFullYear()} Twisted Scissors. All rights reserved.
           </div>
         </div>
