@@ -31,13 +31,13 @@
   body {
     @apply bg-[#F8F6F3] text-[#1a1a1a] antialiased;
     font-family: 'General Sans', system-ui, sans-serif;
-    cursor: none;
+    cursor: default;
     overflow-x: hidden;
   }
   
-  /* Hide default cursor on interactive elements */
-  a, button, [role="button"], input, textarea, select {
-    cursor: none;
+  /* Orange cursor on interactive elements */
+  a, button, [role="button"], input, textarea, select, [data-cursor-hover] {
+    cursor: pointer;
   }
   
   h1, h2, h3, h4, h5, h6 {
