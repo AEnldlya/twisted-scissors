@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navigation from "@/components/Navigation";
-import CustomCursor from "@/components/CustomCursor";
 import ScrollProgress from "@/components/ScrollProgress";
 import PageTransition from "@/components/PageTransition";
 
@@ -30,7 +29,6 @@ export default function RootLayout({
         />
       </head>
       <body className="bg-[#F8F6F3] text-[#1a1a1a] antialiased overflow-x-hidden">
-        <CustomCursor />
         <ScrollProgress />
         <Navigation />
         <PageTransition>{children}</PageTransition>
