@@ -3,17 +3,15 @@
 @tailwind utilities;
 
 :root {
-  /* Barbershop Color System - Copper/Bronze Edition */
+  /* Barbershop Color System */
   --charcoal: #1a1a1a;
   --charcoal-light: #2a2a2a;
-  --charcoal-dark: #0f0f0f;
   --copper: #B87333;
   --copper-light: #D4915A;
   --copper-dark: #8B5A2B;
   --cream: #F8F6F3;
   --cream-dark: #EDE9E4;
   --white: #FFFFFF;
-  --white-soft: rgba(255, 255, 255, 0.9);
   
   /* Font families */
   --font-general: 'General Sans', system-ui, sans-serif;
@@ -31,13 +29,6 @@
   body {
     @apply bg-[#F8F6F3] text-[#1a1a1a] antialiased;
     font-family: 'General Sans', system-ui, sans-serif;
-    cursor: default;
-    overflow-x: hidden;
-  }
-  
-  /* Orange cursor on interactive elements */
-  a, button, [role="button"], input, textarea, select, [data-cursor-hover] {
-    cursor: pointer;
   }
   
   h1, h2, h3, h4, h5, h6 {
@@ -63,33 +54,31 @@
     font-family: 'General Sans', system-ui, sans-serif;
   }
   
-  /* Buttons - Sharp corners for barbershop precision */
+  /* Buttons - Clean and simple */
   .btn-primary {
-    @apply inline-flex items-center gap-3 px-8 py-4 bg-[#1a1a1a] text-white font-semibold text-sm tracking-wider uppercase;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-[#1a1a1a] text-white font-medium text-sm tracking-wide uppercase;
     border-radius: 0;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.3s ease;
   }
   
   .btn-primary:hover {
     @apply bg-[#B87333];
-    transform: translateY(-2px);
   }
   
   .btn-copper {
-    @apply inline-flex items-center gap-3 px-8 py-4 bg-[#B87333] text-white font-semibold text-sm tracking-wider uppercase;
+    @apply inline-flex items-center gap-2 px-6 py-3 bg-[#B87333] text-white font-medium text-sm tracking-wide uppercase;
     border-radius: 0;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.3s ease;
   }
   
   .btn-copper:hover {
     @apply bg-[#1a1a1a];
-    transform: translateY(-2px);
   }
   
   .btn-outline {
-    @apply inline-flex items-center gap-3 px-8 py-4 border border-[#1a1a1a] text-[#1a1a1a] font-semibold text-sm tracking-wider uppercase;
+    @apply inline-flex items-center gap-2 px-6 py-3 border border-[#1a1a1a] text-[#1a1a1a] font-medium text-sm tracking-wide uppercase;
     border-radius: 0;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.3s ease;
   }
   
   .btn-outline:hover {
@@ -97,184 +86,29 @@
   }
   
   .btn-outline-white {
-    @apply inline-flex items-center gap-3 px-8 py-4 border border-white/30 text-white font-semibold text-sm tracking-wider uppercase;
+    @apply inline-flex items-center gap-2 px-6 py-3 border border-white/30 text-white font-medium text-sm tracking-wide uppercase;
     border-radius: 0;
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: all 0.3s ease;
   }
   
   .btn-outline-white:hover {
     @apply bg-white/10 border-white;
   }
   
-  /* Cards - Sharp corners */
+  /* Cards */
   .card-sharp {
     border-radius: 0;
-    transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+    transition: box-shadow 0.3s ease;
   }
   
-  /* Text reveal animation container */
-  .text-reveal {
-    overflow: hidden;
+  /* Simple shadows */
+  .shadow-sharp {
+    box-shadow: 4px 4px 0 rgba(26, 26, 26, 0.08);
   }
   
-  .text-reveal-inner {
-    display: inline-block;
-    transform: translateY(100%) skewY(5deg);
-    opacity: 0;
-  }
-  
-  .text-reveal-inner.revealed {
-    transform: translateY(0) skewY(0);
-    opacity: 1;
-    transition: transform 1s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.8s ease;
-  }
-  
-  /* Shear/Snip clip-path animations */
-  .clip-snip-right {
-    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-  }
-  
-  .clip-snip-right.revealed {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transition: clip-path 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .clip-snip-left {
-    clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
-  }
-  
-  .clip-snip-left.revealed {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transition: clip-path 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .clip-diagonal {
-    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-  }
-  
-  .clip-diagonal.revealed {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transition: clip-path 1.4s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  /* Scissor snip clip-path animation */
-  .clip-scissor-snip {
-    clip-path: polygon(0 0, 0 0, 0 100%, 0 100%);
-  }
-  
-  .clip-scissor-snip.revealed {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-    transition: clip-path 1s cubic-bezier(0.76, 0, 0.24, 1);
-  }
-  
-  /* Razor line divider */
-  .razor-line {
-    height: 1px;
-    background: linear-gradient(90deg, transparent, #B87333, transparent);
-    transform: scaleX(0);
-    transform-origin: center;
-  }
-  
-  .razor-line.revealed {
-    transform: scaleX(1);
-    transition: transform 1.5s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  /* Razor line draw animation */
-  .razor-draw {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .razor-draw::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 1px;
-    background: #B87333;
-    transform: scaleX(0);
-    transform-origin: left;
-    transition: transform 1.2s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .razor-draw.revealed::after {
-    transform: scaleX(1);
-  }
-  
-  /* Barber pole stripe background */
-  .barber-stripes {
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(184, 115, 51, 0.03) 10px,
-      rgba(184, 115, 51, 0.03) 20px
-    );
-  }
-  
-  /* Animated barber pole stripes */
-  .barber-stripes-animated {
-    background: repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 20px,
-      rgba(184, 115, 51, 0.05) 20px,
-      rgba(184, 115, 51, 0.05) 40px
-    );
-    animation: stripe-scroll 20s linear infinite;
-  }
-  
-  @keyframes stripe-scroll {
-    0% {
-      background-position: 0 0;
-    }
-    100% {
-      background-position: 56px 0;
-    }
-  }
-  
-  /* Mirror reflection effect */
-  .mirror-hover {
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .mirror-hover::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 50%;
-    height: 100%;
-    background: linear-gradient(
-      90deg,
-      transparent,
-      rgba(255, 255, 255, 0.2),
-      transparent
-    );
-    transform: skewX(-25deg);
-    transition: left 0.8s ease;
-  }
-  
-  .mirror-hover:hover::after {
-    left: 150%;
-  }
-  
-  /* 3D tilt card */
-  .tilt-card {
-    transform-style: preserve-3d;
-    transition: transform 0.3s ease;
-  }
-  
-  .tilt-card-content {
-    transform: translateZ(20px);
-  }
-  
-  /* Custom scrollbar */
+  /* Custom scrollbar - subtle */
   ::-webkit-scrollbar {
-    width: 8px;
+    width: 6px;
   }
   
   ::-webkit-scrollbar-track {
@@ -297,217 +131,20 @@
     transform-origin: left;
   }
   
-  /* Steam/mist particle container */
-  .steam-container {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
-  
-  .steam-particle {
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
-    border-radius: 50%;
-    animation: float-up 8s infinite ease-in-out;
-  }
-  
-  @keyframes float-up {
-    0%, 100% {
-      transform: translateY(100%) scale(0.5);
-      opacity: 0;
-    }
-    50% {
-      opacity: 0.2;
-    }
-    100% {
-      transform: translateY(-100%) scale(1.5);
-      opacity: 0;
-    }
-  }
-  
-  /* Character animation */
-  .char {
-    display: inline-block;
-    transform: translateY(100%) skewX(-10deg);
+  /* Simple fade animations */
+  .fade-in {
     opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
   }
   
-  .char.revealed {
-    transform: translateY(0) skewX(0);
-    opacity: 1;
-    transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1), opacity 0.6s ease;
-  }
-  
-  /* Image hover with shear */
-  .img-shear-hover {
-    transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .img-shear-hover:hover {
-    transform: scale(1.05) skewX(-2deg);
-    filter: brightness(1.1);
-  }
-  
-  /* Section divider with snip effect */
-  .section-divider {
-    position: relative;
-    height: 60px;
-    overflow: hidden;
-  }
-  
-  .section-divider::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: #B87333;
-    transform: translateY(-50%);
-  }
-  
-  .section-divider::after {
-    content: '✂';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: #B87333;
-    font-size: 24px;
-    background: #F8F6F3;
-    padding: 0 20px;
-  }
-  
-  /* Scissor snip animation */
-  .scissor-icon {
-    display: inline-block;
-    transition: transform 0.3s ease;
-  }
-  
-  .scissor-icon.snip {
-    animation: snip-action 0.4s ease-in-out;
-  }
-  
-  @keyframes snip-action {
-    0%, 100% {
-      transform: rotate(0deg);
-    }
-    50% {
-      transform: rotate(-15deg);
-    }
-  }
-  
-  /* Parallax layers */
-  .parallax-slow {
-    will-change: transform;
-  }
-  
-  .parallax-fast {
-    will-change: transform;
-  }
-  
-  /* Magnetic button effect base */
-  [data-magnetic] {
-    transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  /* Editorial layout helpers */
-  .editorial-grid {
-    display: grid;
-    grid-template-columns: repeat(12, 1fr);
-    gap: 2rem;
-  }
-  
-  .editorial-span-5 {
-    grid-column: span 5;
-  }
-  
-  .editorial-span-7 {
-    grid-column: span 7;
-  }
-  
-  .editorial-offset-1 {
-    grid-column-start: 2;
-  }
-  
-  /* Asymmetric spacing */
-  .asymmetric-pad {
-    padding: clamp(4rem, 10vw, 10rem) 0;
-  }
-  
-  /* Sharp shadow */
-  .shadow-sharp {
-    box-shadow: 8px 8px 0 rgba(26, 26, 26, 0.1);
-  }
-  
-  .shadow-sharp-copper {
-    box-shadow: 8px 8px 0 rgba(184, 115, 51, 0.2);
-  }
-  
-  /* Copper gradient text */
-  .text-copper-gradient {
-    background: linear-gradient(135deg, #B87333 0%, #D4915A 50%, #B87333 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  /* Reveal animations for scroll */
-  .reveal-up {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s cubic-bezier(0.23, 1, 0.32, 1), transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .reveal-up.revealed {
+  .fade-in.visible {
     opacity: 1;
     transform: translateY(0);
-  }
-  
-  .reveal-shear {
-    opacity: 0;
-    transform: translateY(60px) skewY(3deg);
-    transition: opacity 1s cubic-bezier(0.23, 1, 0.32, 1), transform 1s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-  
-  .reveal-shear.revealed {
-    opacity: 1;
-    transform: translateY(0) skewY(0);
-  }
-  
-  /* Stagger children */
-  .stagger-children > * {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  
-  .stagger-children.revealed > *:nth-child(1) { transition-delay: 0s; }
-  .stagger-children.revealed > *:nth-child(2) { transition-delay: 0.1s; }
-  .stagger-children.revealed > *:nth-child(3) { transition-delay: 0.2s; }
-  .stagger-children.revealed > *:nth-child(4) { transition-delay: 0.3s; }
-  .stagger-children.revealed > *:nth-child(5) { transition-delay: 0.4s; }
-  .stagger-children.revealed > *:nth-child(6) { transition-delay: 0.5s; }
-  
-  .stagger-children.revealed > * {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.6s cubic-bezier(0.23, 1, 0.32, 1), transform 0.6s cubic-bezier(0.23, 1, 0.32, 1);
   }
 }
 
 @layer utilities {
-  /* Perspective for 3D effects */
-  .perspective-1000 {
-    perspective: 1000px;
-  }
-  
-  .preserve-3d {
-    transform-style: preserve-3d;
-  }
-  
   /* Hide scrollbar but allow scrolling */
   .scrollbar-hide {
     -ms-overflow-style: none;
