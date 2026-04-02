@@ -6,11 +6,11 @@ import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Star, Clock, MapPin, ArrowRight, Phone, Calendar, Award, Scissors } from 'lucide-react';
+import HeroAceternity from './components/HeroAceternity';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export default function HomePage() {
-  const heroRef = useRef<HTMLDivElement>(null);
   const servicesRef = useRef<HTMLDivElement>(null);
   const aboutRef = useRef<HTMLDivElement>(null);
   const reviewsRef = useRef<HTMLDivElement>(null);
@@ -140,96 +140,8 @@ export default function HomePage() {
 
   return (
     <main className="min-h-screen bg-[#F8F6F3]">
-      {/* Hero Section - Clean and Simple */}
-      <section 
-        ref={heroRef}
-        className="relative min-h-screen bg-[#1a1a1a] overflow-hidden"
-      >
-        {/* Background Image */}
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-gradient-to-r from-[#1a1a1a] via-[#1a1a1a]/70 to-transparent z-10" />
-          <Image
-            src="/images/insideview.png"
-            alt="Twisted Scissors Interior"
-            fill
-            className="object-cover opacity-40"
-            priority
-          />
-        </div>
-
-        {/* Hero Content */}
-        <div className="relative z-20 min-h-screen flex items-center">
-          <div className="max-w-7xl mx-auto px-6 lg:px-8 w-full">
-            <div className="grid lg:grid-cols-2 gap-12 items-center">
-              {/* Left Content */}
-              <div>
-                <span className="inline-block text-[#B87333] font-body text-sm tracking-wider uppercase mb-6">
-                  Hanover, NH
-                </span>
-                
-                <h1 className="font-display text-5xl md:text-6xl lg:text-7xl text-white leading-tight mb-6">
-                  Haircuts in
-                  <br />
-                  <span className="text-[#B87333]">Hanover, NH</span>
-                </h1>
-                
-                <p className="font-body text-lg text-white/70 max-w-md mb-8 leading-relaxed">
-                  Brooke has been cutting hair here for over 20 years. 
-                  She takes her time and listens to what you want.
-                </p>
-                
-                <div className="flex flex-wrap gap-4">
-                  <a 
-                    href="https://bookoapp.com/book/twisted-scissors" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="btn-copper"
-                  >
-                    Book Appointment
-                    <ArrowRight size={18} />
-                  </a>
-                  <Link 
-                    href="/services" 
-                    className="btn-outline-white"
-                  >
-                    View Services
-                  </Link>
-                </div>
-              </div>
-
-              {/* Right Side - Simple Stats */}
-              <div className="lg:pl-12">
-                <div className="bg-[#2a2a2a] p-8 border-l-4 border-[#B87333]">
-                  <div className="flex items-center gap-2 mb-4">
-                    {[...Array(5)].map((_, i) => (
-                      <Star key={i} className="w-5 h-5 text-[#B87333] fill-[#B87333]" />
-                    ))}
-                  </div>
-                  <div className="font-display text-5xl text-white mb-2">5.0</div>
-                  <div className="font-body text-white/60 text-sm mb-8">
-                    Google Rating
-                  </div>
-                  
-                  <div className="space-y-4 pt-6 border-t border-white/10">
-                    <div className="flex items-center gap-3">
-                      <Award className="w-5 h-5 text-[#B87333]" />
-                      <span className="font-body text-white/80">20+ Years Experience</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <MapPin className="w-5 h-5 text-[#B87333]" />
-                      <span className="font-body text-white/80">53 S. Main St</span>
-                    </div>
-                    <div className="flex items-center gap-3">
-                      <Calendar className="w-5 h-5 text-[#B87333]" />
-                      <span className="font-body text-white/80">Wed-Sat</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Hero Section with Aceternity Animations */}
+      <HeroAceternity />
 
       {/* Services Section */}
       <section 
